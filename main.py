@@ -66,7 +66,7 @@ while running:
         if cash > cost:
             print(f"Total cost: ${cost}")
             print(f"Current Balance: ${cash}")
-            print(f"Balance after buy: ${round(cash - (cost), 2)}")
+            print(f"Balance after payment: ${round(cash - (cost), 2)}")
             confirmation = input("Confirm purchase: ")
             if confirmation.lower() in yes:
                 print(
@@ -78,7 +78,7 @@ while running:
                 else:
                     portfolio[name] = amount
         else:
-            print(f"You have insufficient cash to buy {amount} share{'s' if amount != 1 else ''} of {name} for ${cost}")
+            print(f"You have insufficient cash to purchase {amount} share{'s' if amount != 1 else ''} of {name} for ${cost}")
             print(f"Your balance is only {cash}")
     elif choice == 2:
         print("What stock do you want to sell?")
