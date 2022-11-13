@@ -28,10 +28,13 @@ def save(cash, portfolio):
 
 
 def recover():
-    with open("data.txt", "r") as f:
-        data = f.read()
-    data = json.loads(data)
-    return data["cash"], data["portfolio"]
+    try:
+        with open("data.txt", "r") as f:
+            data = f.read()
+        data = json.loads(data)
+        return data["cash"], data["portfolio"]
+    except:
+        return 1000, {}
 
 
 cash, portfolio = recover()

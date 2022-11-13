@@ -1,1 +1,0 @@
-{"cash": 158.96, "portfolio": {"aapl": 3.0, "tsla": 2.0}}
