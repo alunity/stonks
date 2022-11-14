@@ -83,26 +83,32 @@ while running:
     elif choice == 2:
         print("What stock do you want to sell?")
         name = input()
-        price = getStockPrice(name)
-        print(f"{name} costs per share: ${price}")
-        print("How many shares do you want to sell")
-        amount = float(input())
-        cost = round(amount * price, 2)
-        print(f"Total cost: ${cost}")
-        print(f"Current Balance: ${cash}")
-        print(f"Balance after sell: ${round(cash + (cost), 2)}")
-        print("Confirm sell: ")
-        confirmation = input()
+        if name in portfolio:
+            print(f"you have {portfolio[name]} amount of this stock")
+            price = getStockPrice(name)
+            print(f"{name} costs per share: ${price}")
+            print("How many shares do you want to sell")
+            amount = float(input())
+            if amount <= portfolio[name]:
+                cost = round(amount * price, 2)
+                print(f"Total cost: ${cost}")
+                print(f"Current Balance: ${cash}")
+                print(f"Balance after sell: ${round(cash + (cost), 2)}")
+                print("Confirm sell: ")
+                confirmation = input()
 
-        if confirmation.lower() in yes:
-            print(
-                f"You have sold {amount} share{'s' if amount != 1 else ''} of {name} for ${cost}")
-            cash += cost
-            cash = round(cash, 2)
-            if name in portfolio:
-                portfolio[name] -= amount
+                if confirmation.lower() in yes:
+                    print(
+                        f"You have sold {amount} share{'s' if amount != 1 else ''} of {name} for ${cost}")
+                    cash += cost
+                    cash = round(cash, 2)
+                    portfolio[name] -= amount
             else:
-                portfolio[name] = amount
+                print(f"you don't own {amount} of {name}")
+        else:
+            print(f"you dont have {name} stocks in your portfolio")
+        
+
 
     elif choice == 3:
         total = 0
