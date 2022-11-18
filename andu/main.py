@@ -15,6 +15,10 @@ with open("./stockNames.csv", 'r') as file:
         names.append(row)
 
 
+def removeStocks(stock):
+    if portfolio[stock] == 0:
+        portfolio.pop(stock)
+
 def getStockPrice(name: str) -> int:
     ticker = yf.Ticker(name).info
     return ticker["regularMarketPrice"]
@@ -103,6 +107,7 @@ while running:
                     cash += cost
                     cash = round(cash, 2)
                     portfolio[name] -= amount
+                    removeStocks(name)
             else:
                 print(f"you don't own {amount} of {name}")
         else:
