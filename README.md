@@ -2,8 +2,9 @@
 
 - Stonkz and stuff
 
-## Python CLI ~ andu
+| project      | epic name |
+| ------------ | --------- |
+| Python CLI   | andu      |
+| React WebApp | senja     |
 
-## React WebApp ~ senja
-
-Install requirements with `pip install -r requirements.txt`
+<!-- Install requirements with `pip install -r requirements.txt` -->
