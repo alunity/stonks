@@ -3,12 +3,10 @@ import Table from "./table";
 import "./App.css";
 import StockView from "./stockView";
 import { loadData, saveData } from "./data";
+import port from "./portInterface";
+import DelayedInput from "./delayedInput";
 
 function App() {
-  interface port {
-    [symbol: string]: number;
-  }
-
   let [symbol, setSymbol] = useState("");
   let [cash, setCash] = useState(loadData().cash);
   let [portfolio, setPortofolio] = useState<port>(loadData().portfolio);
@@ -37,10 +35,11 @@ function App() {
         <h1>Stonks</h1>
         <h3>${cash.toFixed(2)}</h3>
         <form onSubmit={(e) => e.preventDefault()}>
-          <input
+          {/* <input
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
-          ></input>
+          ></input> */}
+          <DelayedInput callback={(text: string) => setSymbol(text)} />
         </form>
       </div>
       <StockView

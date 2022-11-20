@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import getPrice from "./stock";
+import port from "./portInterface";
+import requestPrice from "./stock";
 
 interface tableProps {
   updateSymbol: Function;
   data: port;
-}
-
-interface port {
-  [symbol: string]: number;
 }
 
 interface row {
@@ -23,7 +20,7 @@ function Table(props: tableProps) {
     const fetchData = async () => {
       let data = [];
       for (let i in props.data) {
-        data.push([i, props.data[i], (await getPrice(i)) * props.data[i]]);
+        data.push([i, props.data[i], (await requestPrice(i)) * props.data[i]]);
       }
       setData(data);
     };

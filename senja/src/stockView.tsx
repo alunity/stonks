@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import getPrice from "./stock";
-
-interface port {
-  [symbol: string]: number;
-}
+import port from "./portInterface";
+import requestPrice from "./stock";
 
 interface viewerProps {
   symbol: string;
@@ -19,7 +16,7 @@ function StockView(props: viewerProps) {
   let [buying, setBuy] = useState(true);
 
   async function getData() {
-    let price = await getPrice(props.symbol);
+    let price = await requestPrice(props.symbol);
     setStockData([props.symbol, price]);
   }
 

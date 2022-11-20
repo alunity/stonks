@@ -1,0 +1,5 @@
+- [ ] Redesign
+- [ ] Caching of requests
+- [ ] Automatic check prices at time interval and update
+- [ ] Delay between typing and making api request for stock
+- [ ] Fix decimal inconsistencies
