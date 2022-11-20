@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import getPrice from "./stock";
 
 interface tableProps {
+  updateSymbol: Function;
   data: port;
 }
 
@@ -35,7 +36,7 @@ function Table(props: tableProps) {
     total[0] = total[0] + x[1];
     total[1] = total[1] + x[2];
     return (
-      <tr key={x[0]}>
+      <tr key={x[0]} onClick={() => props.updateSymbol(x[0])}>
         <td>{x[0]}</td>
         <td>{x[1]}</td>
         <td>{x[2]}</td>
@@ -45,7 +46,7 @@ function Table(props: tableProps) {
 
   return (
     <>
-      <table className="table">
+      <table className="table table-hover">
         <thead className="thead-light">
           <tr>
             <th>symbol</th>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "./table";
 import "./App.css";
 import StockView from "./stockView";
+import { loadData, saveData } from "./data";
 
 function App() {
   interface port {
@@ -9,8 +10,8 @@ function App() {
   }
 
   let [symbol, setSymbol] = useState("");
-  let [cash, setCash] = useState(1000);
-  let [portfolio, setPortofolio] = useState<port>({});
+  let [cash, setCash] = useState(loadData().cash);
+  let [portfolio, setPortofolio] = useState<port>(loadData().portfolio);
 
   function updatePorfolio(symbol: string, amount: number): void {
     let port = JSON.parse(JSON.stringify(portfolio));
@@ -26,24 +27,9 @@ function App() {
     setPortofolio(port);
   }
 
-  function updateCash(number: number): boolean {
-    if (cash + number >= 0) {
-      setCash(cash + number);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  // function buy(symbol: string, amount: number): boolean {
-  //   if (amount * stockData[1] > cash) {
-  //     return false;
-  //   } else {
-  //     setCash(cash - amount * stockData[1]);
-  //     updatePorfolio(symbol, amount);
-  //   }
-  //   return true;
-  // }
+  useEffect(() => {
+    saveData(cash, portfolio);
+  }, [cash, portfolio]);
 
   return (
     <div className="App">
@@ -59,12 +45,21 @@ function App() {
       </div>
       <StockView
         symbol={symbol}
-        updateCash={(number: number) => updateCash(number)}
+        updateCash={(number: number) => setCash(cash + number)}
         updatePorfolio={(symbol: string, amount: number) =>
           updatePorfolio(symbol, amount)
         }
+        cash={cash}
+        portfolio={portfolio}
       />
-      <div className="container">{<Table data={portfolio} />}</div>
+      <div className="container">
+        {
+          <Table
+            data={portfolio}
+            updateSymbol={(symbol: string) => setSymbol(symbol)}
+          />
+        }
+      </div>
     </div>
   );
 }
