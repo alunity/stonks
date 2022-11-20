@@ -5,6 +5,7 @@ import StockView from "./stockView";
 import { loadData, saveData } from "./data";
 import port from "./portInterface";
 import DelayedInput from "./delayedInput";
+import Networth from "./networth";
 
 function App() {
   let [symbol, setSymbol] = useState("");
@@ -33,7 +34,8 @@ function App() {
     <div className="App">
       <div className="container">
         <h1>Stonks</h1>
-        <h3>${cash.toFixed(2)}</h3>
+        {/* <h3>${cash.toFixed(2)}</h3> */}
+        <Networth cash={cash} portfolio={portfolio} />
         <form onSubmit={(e) => e.preventDefault()}>
           {/* <input
             value={symbol}
