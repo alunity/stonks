@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "./table";
 import "./App.css";
-import getPrice from "./stock";
+import StockView from "./stockView";
 
 function App() {
   interface port {
@@ -9,30 +9,8 @@ function App() {
   }
 
   let [symbol, setSymbol] = useState("");
-  let [stockData, setStockData] = useState<any>([]);
-
   let [cash, setCash] = useState(1000);
   let [portfolio, setPortofolio] = useState<port>({});
-
-  let [amount, setAmount] = useState<number>(0);
-
-  // function getPrice(name: string): void {
-  //   fetch(
-  //     `https://api.allorigins.win/get?url=${encodeURIComponent(
-  //       "https://query1.finance.yahoo.com/v8/finance/chart/" +
-  //         name.toUpperCase()
-  //     )}`,
-  //     { cache: "no-store" }
-  //     // Why storing??
-  //   )
-  //     .then((response) => response.json())
-  //     .then(
-  //       (data) => JSON.parse(data.contents).chart.result[0].meta
-  //       // console.log(JSON.parse(data.contents).chart.result[0].meta.symbol)
-  //     )
-  //     .then((data) => setStockData([data.symbol, data.regularMarketPrice]))
-  //     .catch((error) => console.log("Symbol couldn't be found"));
-  // }
 
   function updatePorfolio(symbol: string, amount: number): void {
     let port = JSON.parse(JSON.stringify(portfolio));
@@ -48,20 +26,24 @@ function App() {
     setPortofolio(port);
   }
 
-  function buy(symbol: string, amount: number): boolean {
-    if (amount * stockData[1] > cash) {
-      return false;
+  function updateCash(number: number): boolean {
+    if (cash + number >= 0) {
+      setCash(cash + number);
+      return true;
     } else {
-      setCash(cash - amount * stockData[1]);
-      updatePorfolio(symbol, amount);
+      return false;
     }
-    return true;
   }
 
-  async function getData() {
-    let price = await getPrice(symbol);
-    setStockData([symbol, price]);
-  }
+  // function buy(symbol: string, amount: number): boolean {
+  //   if (amount * stockData[1] > cash) {
+  //     return false;
+  //   } else {
+  //     setCash(cash - amount * stockData[1]);
+  //     updatePorfolio(symbol, amount);
+  //   }
+  //   return true;
+  // }
 
   return (
     <div className="App">
@@ -73,25 +55,15 @@ function App() {
             value={symbol}
             onChange={(e) => setSymbol(e.target.value)}
           ></input>
-          <button onClick={() => getData()}>Search</button>
         </form>
       </div>
-      {stockData.length !== 0 && (
-        <div className="container card">
-          <h2>{stockData[0]}</h2>
-          <p>{stockData[1]}</p>
-          <span>
-            <p>How many you want buy?</p>
-            <input
-              type={"number"}
-              value={amount}
-              onChange={(e) => setAmount(+e.target.value)}
-            ></input>
-            <button onClick={() => buy(symbol, amount)}>Buy</button>
-            {amount !== undefined && <p>Cost: {amount * stockData[1]} </p>}
-          </span>
-        </div>
-      )}
+      <StockView
+        symbol={symbol}
+        updateCash={(number: number) => updateCash(number)}
+        updatePorfolio={(symbol: string, amount: number) =>
+          updatePorfolio(symbol, amount)
+        }
+      />
       <div className="container">{<Table data={portfolio} />}</div>
     </div>
   );
