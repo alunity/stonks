@@ -2,6 +2,7 @@ import yfinance as yf
 import csv
 from difflib import SequenceMatcher
 import json
+from functions import removeStocks, getStockPrice, save, recover, grabInfo
 
 cash = 1000
 names = []
@@ -13,7 +14,6 @@ with open("./stockNames.csv", 'r') as file:
     csvreader = csv.reader(file)
     for row in csvreader:
         names.append(row)
-
 
 def removeStocks(stock):
     if portfolio[stock] == 0:
@@ -39,7 +39,6 @@ def recover():
         return data["cash"], data["portfolio"]
     except:
         return 1000, {}
-
 
 cash, portfolio = recover()
 
