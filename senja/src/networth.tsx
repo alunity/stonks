@@ -24,9 +24,9 @@ function Networth(props: worthProps) {
   return (
     <div className="card">
       <div className="container">
-        <h4>Networth: ${assets + props.cash}</h4>
-        <h4>Assets: ${assets}</h4>
-        <h4>Cash: ${props.cash}</h4>
+        <h4>Networth: ${(assets + props.cash).toFixed(2)}</h4>
+        <h4>Assets: ${assets.toFixed(2)}</h4>
+        <h4>Cash: ${props.cash.toFixed(2)}</h4>
       </div>
     </div>
   );

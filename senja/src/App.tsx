@@ -33,36 +33,60 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <h1>Stonks</h1>
-        {/* <h3>${cash.toFixed(2)}</h3> */}
-        <Networth cash={cash} portfolio={portfolio} />
-        <form onSubmit={(e) => e.preventDefault()}>
-          {/* <input
-            value={symbol}
-            onChange={(e) => setSymbol(e.target.value)}
-          ></input> */}
-          <DelayedInput callback={(text: string) => setSymbol(text)} />
-        </form>
-      </div>
-      <StockView
-        symbol={symbol}
-        updateCash={(number: number) => setCash(cash + number)}
-        updatePorfolio={(symbol: string, amount: number) =>
-          updatePorfolio(symbol, amount)
-        }
-        cash={cash}
-        portfolio={portfolio}
-      />
-      <div className="container">
-        {
-          <Table
-            data={portfolio}
-            updateSymbol={(symbol: string) => setSymbol(symbol)}
-          />
-        }
+        <div className="row">
+          <h1 className="display-1">Stonks</h1>
+          <Networth cash={cash} portfolio={portfolio} />
+        </div>
+        <div className="row">
+          <div className="col-8">
+            <Table
+              data={portfolio}
+              updateSymbol={(symbol: string) => setSymbol(symbol)}
+            />
+          </div>
+          <div className="col-4">
+            <form onSubmit={(e) => e.preventDefault()}>
+              <DelayedInput callback={(text: string) => setSymbol(text)} />
+            </form>
+            <StockView
+              symbol={symbol}
+              updateCash={(number: number) => setCash(cash + number)}
+              updatePorfolio={(symbol: string, amount: number) =>
+                updatePorfolio(symbol, amount)
+              }
+              cash={cash}
+              portfolio={portfolio}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
 export default App;
+
+// div className="container">
+//         <h1 className="display-1">Stonks</h1>
+//         <Networth cash={cash} portfolio={portfolio} />
+//         <form onSubmit={(e) => e.preventDefault()}>
+//           <DelayedInput callback={(text: string) => setSymbol(text)} />
+//         </form>
+//       </div>
+//       <StockView
+//         symbol={symbol}
+//         updateCash={(number: number) => setCash(cash + number)}
+//         updatePorfolio={(symbol: string, amount: number) =>
+//           updatePorfolio(symbol, amount)
+//         }
+//         cash={cash}
+//         portfolio={portfolio}
+//       />
+//       <div className="container">
+//         {
+//           <Table
+//             data={portfolio}
+//             updateSymbol={(symbol: string) => setSymbol(symbol)}
+//           />
+//         }
+//       </div>
