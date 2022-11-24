@@ -34,9 +34,9 @@ function Table(props: tableProps) {
     total[1] = total[1] + x[2];
     return (
       <tr key={x[0]} onClick={() => props.updateSymbol(x[0])}>
-        <td>{x[0]}</td>
-        <td>{x[1]}</td>
-        <td>{x[2]}</td>
+        <td>{x[0].toUpperCase()}</td>
+        <td>{x[1].toFixed(2)}</td>
+        <td>{x[2].toFixed(2)}</td>
       </tr>
     );
   });
@@ -54,9 +54,9 @@ function Table(props: tableProps) {
         <tbody>
           {rows}
           <tr className="table-secondary">
-            <td>total</td>
+            <td>Total</td>
             <td>{total[0]}</td>
-            <td>{total[1]}</td>
+            <td>{total[1].toFixed(2)}</td>
           </tr>
         </tbody>
       </table>

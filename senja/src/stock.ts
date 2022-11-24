@@ -18,6 +18,7 @@ async function requestPrice(symbol: string): Promise<number> {
 }
 
 async function getPrice(symbol: string): Promise<number> {
+  symbol = symbol.toLowerCase();
   if (cache[symbol] !== undefined) {
     return cache[symbol];
   } else {

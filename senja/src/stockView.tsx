@@ -44,7 +44,7 @@ function StockView(props: viewerProps) {
     <>
       {stockData.length !== 0 && (
         <div className="container card">
-          <h2>{stockData[0]}</h2>
+          <h2>{stockData[0].toUpperCase()}</h2>
           <p>{stockData[1]}</p>
           <button className="btn btn-primary" onClick={() => setBuy(!buying)}>
             {buying ? "buy" : "sell"}
