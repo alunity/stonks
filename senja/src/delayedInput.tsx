@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { isSymbol, search } from "./search";
+import { isSymbol } from "./search";
 
 interface input {
   callback: Function;
@@ -12,34 +12,29 @@ function DelayedInput(props: input) {
     if (isSymbol(text)) {
       props.callback(text);
     }
-  });
+  }, [text, props]);
 
-  let options;
-  let suggestions = search(text);
-  if (suggestions.length < 20) {
-    options = suggestions.map((x) => {
-      return (
-        <option key={x[0]} value={x[0]}>
-          {x[1]}
-        </option>
-      );
-    });
-  }
-  // useEffect(() => {
-  //   let timeout = setTimeout(() => {
-  //     props.callback(text);
-  //   }, 500);
-  //   return () => clearTimeout(timeout);
-  // });
+  // function getSymboL()
 
+  // let options;
+  // let suggestions = search(text);
+  // if (suggestions.length < 50) {
+  //   options = suggestions.map((x) => {
+  //     return (
+  //       <option key={x[0]} value={x[0]}>
+  //         {x[1]}
+  //       </option>
+  //     );
+  //   });
+  // }
   return (
     <div>
       <input
         value={text}
-        list="x"
+        // list="suggestions"
         onChange={(e) => setText(e.target.value)}
       ></input>
-      <datalist id="x">{options}</datalist>
+      {/* <datalist id="suggestions">{options}</datalist> */}
     </div>
   );
 }
