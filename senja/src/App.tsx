@@ -4,7 +4,7 @@ import "./App.css";
 import StockView from "./stockView";
 import { loadData, saveData } from "./data";
 import port from "./portInterface";
-import DelayedInput from "./delayedInput";
+import SymbolInput from "./symbolInput";
 import Networth from "./networth";
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
     if (port[symbol] === 0) {
       delete port[symbol];
     }
-
     setPortofolio(port);
   }
 
@@ -46,7 +45,7 @@ function App() {
           </div>
           <div className="col-4">
             <form onSubmit={(e) => e.preventDefault()}>
-              <DelayedInput callback={(text: string) => setSymbol(text)} />
+              <SymbolInput callback={(text: string) => setSymbol(text)} />
             </form>
             <StockView
               symbol={symbol}

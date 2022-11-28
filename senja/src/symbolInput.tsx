@@ -4,7 +4,7 @@ interface input {
   callback: Function;
 }
 
-function DelayedInput(props: input) {
+function SymbolInput(props: input) {
   let [text, setText] = useState("");
 
   useEffect(() => {
@@ -18,4 +18,4 @@ function DelayedInput(props: input) {
   );
 }
 
-export default DelayedInput;
+export default SymbolInput;

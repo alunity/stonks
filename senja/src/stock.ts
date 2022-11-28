@@ -1,5 +1,22 @@
 interface isymbols {
-  [symbol: string]: number;
+  [symbol: string]: isymbol;
+}
+
+interface isymbol {
+  price: number;
+  // cachedPrice: number;
+}
+
+setInterval(() => {
+  updateCache(DB);
+}, 600000);
+
+async function updateCache(DB: symbolDB) {
+  let symbols = DB.getSymbols();
+
+  for (let i = 0; i < symbols.length; i++) {
+    DB.setPrice(symbols[i], await requestPrice(symbols[i]));
+  }
 }
 
 class symbolDB {
@@ -7,7 +24,8 @@ class symbolDB {
   nullSymbols: Array<string> = [];
 
   addSymbol(symbol: string, price: number) {
-    this.symbols[symbol] = price;
+    let data = { price: price };
+    this.symbols[symbol] = data;
   }
 
   addNullSymbol(symbol: string) {
@@ -23,13 +41,22 @@ class symbolDB {
   }
 
   getPrice(symbol: string): number {
-    return this.symbols[symbol];
+    return this.symbols[symbol].price;
+  }
+
+  getSymbols(): Array<string> {
+    return Object.keys(this.symbols);
+  }
+
+  setPrice(symbol: string, price: number) {
+    this.symbols[symbol].price = price;
   }
 }
 
 const DB = new symbolDB();
 
-async function requestData(symbol: string): Promise<number> {
+async function requestPrice(symbol: string): Promise<number> {
+  console.log(symbol);
   try {
     let response = fetch(
       `https://api.allorigins.win/get?url=${encodeURIComponent(
@@ -53,7 +80,7 @@ async function getPrice(symbol: string): Promise<number> {
   } else if (DB.checkSymbolExists(symbol)) {
     return DB.getPrice(symbol);
   }
-  let price = await requestData(symbol);
+  let price = await requestPrice(symbol);
 
   if (price === -1) {
     DB.addNullSymbol(symbol);

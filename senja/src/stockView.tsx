@@ -24,12 +24,12 @@ function StockView(props: viewerProps) {
     if (buying) {
       if (stockData[1] * amount <= props.cash) {
         props.updateCash(-(stockData[1] * amount));
-        props.updatePorfolio(props.symbol, amount);
+        props.updatePorfolio(stockData[0], amount);
       }
     } else {
       if (props.portfolio[stockData[0]] >= amount) {
         props.updateCash(stockData[1] * amount);
-        props.updatePorfolio(props.symbol, -amount);
+        props.updatePorfolio(stockData[0], -amount);
       }
     }
   }
