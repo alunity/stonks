@@ -1,6 +1,13 @@
+import { isymbols } from "./interfaces";
+
 interface data {
   cash: number;
   portfolio: port;
+}
+
+interface dbData {
+  symbols: isymbols;
+  nullSymbols: Array<string>;
 }
 
 interface port {
@@ -21,4 +28,18 @@ function loadData(): data {
   }
 }
 
-export { saveData, loadData };
+function saveDB(symbols: isymbols, nullSymbols: Array<string>) {
+  let data = { symbols: symbols, nullSymbols: nullSymbols };
+  let x = JSON.stringify(data);
+  localStorage.db = x;
+}
+
+function loadDB(): dbData {
+  if (localStorage.db === undefined) {
+    return { symbols: {}, nullSymbols: [] };
+  } else {
+    return JSON.parse(localStorage.db);
+  }
+}
+
+export { saveData, loadData, saveDB, loadDB };

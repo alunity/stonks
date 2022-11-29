@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import port from "./portInterface";
-import getPrice from "./stock";
+import { port } from "./interfaces";
+import { getPrice } from "./stock";
 
 interface tableProps {
   updateSymbol: Function;

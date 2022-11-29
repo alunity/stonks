@@ -3,9 +3,10 @@ import Table from "./table";
 import "./App.css";
 import StockView from "./stockView";
 import { loadData, saveData } from "./data";
-import port from "./portInterface";
 import SymbolInput from "./symbolInput";
 import Networth from "./networth";
+import { port } from "./interfaces";
+import DB from "./symbolDB";
 
 function App() {
   let [symbol, setSymbol] = useState("");
@@ -28,6 +29,11 @@ function App() {
   useEffect(() => {
     saveData(cash, portfolio);
   }, [cash, portfolio]);
+
+  useEffect(() => {
+    DB.updateCache();
+    setPortofolio(portfolio);
+  }, []);
 
   return (
     <div className="App">
