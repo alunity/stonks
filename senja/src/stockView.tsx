@@ -45,22 +45,30 @@ function StockView(props: viewerProps) {
       {stockData.length !== 0 && (
         <div className="container card">
           <h2>{stockData[0].toUpperCase()}</h2>
-          <p>{stockData[1]}</p>
-          <button className="btn btn-primary" onClick={() => setBuy(!buying)}>
-            {buying ? "buy" : "sell"}
-          </button>
-          <span>
-            <p>How many do you want {buying ? "buy" : "sell"}?</p>
-            <input
-              type={"number"}
-              value={amount}
-              onChange={(e) => setAmount(+e.target.value)}
-            ></input>
-            <button onClick={() => transaction(amount)}>
-              {buying ? "buy" : "sell"}
-            </button>
-            {amount !== undefined && <p>Cost: {amount * stockData[1]} </p>}
-          </span>
+          {stockData[1] > -1 && (
+            <>
+              <p>{stockData[1]}</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => setBuy(!buying)}
+              >
+                {buying ? "buy" : "sell"}
+              </button>
+              <span>
+                <p>How many do you want {buying ? "buy" : "sell"}?</p>
+                <input
+                  type={"number"}
+                  value={amount}
+                  onChange={(e) => setAmount(+e.target.value)}
+                ></input>
+                <button onClick={() => transaction(amount)}>
+                  {buying ? "buy" : "sell"}
+                </button>
+                {amount !== undefined && <p>Cost: {amount * stockData[1]} </p>}
+              </span>
+            </>
+          )}
+          {stockData[1] === -1 && <p>Invalid symbol</p>}
         </div>
       )}
     </>

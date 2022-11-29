@@ -24,7 +24,7 @@ class symbolDB {
   }
 
   addSymbol(symbol: string, price: number) {
-    let data = { price: price };
+    let data = { price: price, history: [] };
     this.symbols[symbol] = data;
     this.save();
   }
@@ -47,6 +47,15 @@ class symbolDB {
   }
 
   setPrice(symbol: string, price: number) {
+    if (this.symbols[symbol] !== undefined) {
+      if (this.symbols[symbol].history.length > 0) {
+        if (this.symbols[symbol].price !== this.symbols[symbol].history[0]) {
+          this.symbols[symbol].history.unshift(this.symbols[symbol].price);
+        }
+      } else {
+        this.symbols[symbol].history.unshift(this.symbols[symbol].price);
+      }
+    }
     this.symbols[symbol].price = price;
     this.save();
   }

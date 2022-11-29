@@ -8,7 +8,7 @@ interface isymbols {
 
 interface isymbol {
   price: number;
-  // cachedPrice: number;
+  history: Array<number>;
 }
 
 export type { port, isymbols };

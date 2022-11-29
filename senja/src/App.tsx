@@ -3,7 +3,6 @@ import Table from "./table";
 import "./App.css";
 import StockView from "./stockView";
 import { loadData, saveData } from "./data";
-import SymbolInput from "./symbolInput";
 import Networth from "./networth";
 import { port } from "./interfaces";
 import DB from "./symbolDB";
@@ -51,7 +50,11 @@ function App() {
           </div>
           <div className="col-4">
             <form onSubmit={(e) => e.preventDefault()}>
-              <SymbolInput callback={(text: string) => setSymbol(text)} />
+              {/* <SymbolInput callback={(text: string) => setSymbol(text)} /> */}
+              <input
+                value={symbol}
+                onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+              ></input>
             </form>
             <StockView
               symbol={symbol}
@@ -70,28 +73,3 @@ function App() {
 }
 
 export default App;
-
-// div className="container">
-//         <h1 className="display-1">Stonks</h1>
-//         <Networth cash={cash} portfolio={portfolio} />
-//         <form onSubmit={(e) => e.preventDefault()}>
-//           <DelayedInput callback={(text: string) => setSymbol(text)} />
-//         </form>
-//       </div>
-//       <StockView
-//         symbol={symbol}
-//         updateCash={(number: number) => setCash(cash + number)}
-//         updatePorfolio={(symbol: string, amount: number) =>
-//           updatePorfolio(symbol, amount)
-//         }
-//         cash={cash}
-//         portfolio={portfolio}
-//       />
-//       <div className="container">
-//         {
-//           <Table
-//             data={portfolio}
-//             updateSymbol={(symbol: string) => setSymbol(symbol)}
-//           />
-//         }
-//       </div>

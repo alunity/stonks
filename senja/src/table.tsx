@@ -33,7 +33,7 @@ function Table(props: tableProps) {
     total[0] = total[0] + x[1];
     total[1] = total[1] + x[2];
     return (
-      <tr key={x[0]} onClick={() => props.updateSymbol(x[0])}>
+      <tr key={x[0]} onClick={() => props.updateSymbol(x[0].toUpperCase())}>
         <td>{x[0].toUpperCase()}</td>
         <td>{x[1].toFixed(2)}</td>
         <td>{x[2].toFixed(2)}</td>
