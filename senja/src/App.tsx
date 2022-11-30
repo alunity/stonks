@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import Table from "./table";
 import "./App.css";
 import StockView from "./stockView";
@@ -11,6 +11,7 @@ function App() {
   let [symbol, setSymbol] = useState("");
   let [cash, setCash] = useState(loadData().cash);
   let [portfolio, setPortofolio] = useState<port>(loadData().portfolio);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   function updatePorfolio(symbol: string, amount: number): void {
     let port = JSON.parse(JSON.stringify(portfolio));
@@ -30,8 +31,9 @@ function App() {
   }, [cash, portfolio]);
 
   useEffect(() => {
-    DB.updateCache();
-    setPortofolio(portfolio);
+    DB.updateCache(() => forceUpdate());
+
+    setInterval(() => DB.updateCache(() => forceUpdate()), 600000);
   }, []);
 
   return (

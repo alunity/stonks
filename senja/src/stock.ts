@@ -1,7 +1,7 @@
 import DB from "./symbolDB";
 
 setInterval(() => {
-  DB.updateCache();
+  DB.updateCache(() => console.log());
 }, 600000);
 
 async function requestPrice(symbol: string): Promise<number> {

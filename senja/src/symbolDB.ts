@@ -72,7 +72,7 @@ class symbolDB {
     let i = 0;
     while (
       i < this.symbols[symbol].history.length &&
-      this.symbols[symbol].history[i] == this.symbols[symbol].price
+      this.symbols[symbol].history[i] === this.symbols[symbol].price
     ) {
       i++;
     }
@@ -84,12 +84,13 @@ class symbolDB {
     }
   }
 
-  async updateCache() {
+  async updateCache(a: Function) {
     let symbols = Object.keys(this.symbols);
     for (let i = 0; i < symbols.length; i++) {
       this.setPrice(symbols[i], await requestPrice(symbols[i]));
     }
     this.save();
+    a();
   }
 }
 
