@@ -5,6 +5,7 @@ import { getPrice } from "./stock";
 interface worthProps {
   cash: number;
   portfolio: port;
+  refresh: number;
 }
 
 function Networth(props: worthProps) {
@@ -19,7 +20,7 @@ function Networth(props: worthProps) {
       setAssets(total);
     };
     fetchData();
-  }, [props.cash, props.portfolio]);
+  }, [props.cash, props.portfolio, props.refresh]);
 
   return (
     <div className="card">

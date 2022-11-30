@@ -11,7 +11,8 @@ function App() {
   let [symbol, setSymbol] = useState("");
   let [cash, setCash] = useState(loadData().cash);
   let [portfolio, setPortofolio] = useState<port>(loadData().portfolio);
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  let [refreshCount, setRefreshCount] = useState(0);
+  // const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   function updatePorfolio(symbol: string, amount: number): void {
     let port = JSON.parse(JSON.stringify(portfolio));
@@ -31,9 +32,12 @@ function App() {
   }, [cash, portfolio]);
 
   useEffect(() => {
-    DB.updateCache(() => forceUpdate());
+    DB.updateCache(() => setRefreshCount(refreshCount + 1));
 
-    setInterval(() => DB.updateCache(() => forceUpdate()), 600000);
+    setInterval(
+      () => DB.updateCache(() => setRefreshCount(refreshCount + 1)),
+      600000
+    );
   }, []);
 
   return (
@@ -41,13 +45,14 @@ function App() {
       <div className="container">
         <div className="row">
           <h1 className="display-1">Stonks</h1>
-          <Networth cash={cash} portfolio={portfolio} />
+          <Networth cash={cash} portfolio={portfolio} refresh={refreshCount} />
         </div>
         <div className="row">
           <div className="col-8">
             <Table
               data={portfolio}
               updateSymbol={(symbol: string) => setSymbol(symbol)}
+              refresh={refreshCount}
             />
           </div>
           <div className="col-4">

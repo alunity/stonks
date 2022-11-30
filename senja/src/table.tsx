@@ -6,6 +6,7 @@ import DB from "./symbolDB";
 interface tableProps {
   updateSymbol: Function;
   data: port;
+  refresh: number;
 }
 
 interface row {
@@ -33,7 +34,7 @@ function Table(props: tableProps) {
     };
 
     fetchData();
-  }, [props.data]);
+  }, [props.data, props.refresh]);
 
   let total: Array<number> = [0, 0, 0];
   let rows = stockData.map((x: row) => {
