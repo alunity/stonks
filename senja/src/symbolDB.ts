@@ -47,17 +47,41 @@ class symbolDB {
   }
 
   setPrice(symbol: string, price: number) {
-    if (this.symbols[symbol] !== undefined) {
-      if (this.symbols[symbol].history.length > 0) {
-        if (this.symbols[symbol].price !== this.symbols[symbol].history[0]) {
+    if (price !== -1) {
+      if (this.symbols[symbol] !== undefined) {
+        if (this.symbols[symbol].history.length > 0) {
+          if (this.symbols[symbol].price !== this.symbols[symbol].history[0]) {
+            this.symbols[symbol].history.unshift(this.symbols[symbol].price);
+          }
+        } else {
           this.symbols[symbol].history.unshift(this.symbols[symbol].price);
         }
-      } else {
-        this.symbols[symbol].history.unshift(this.symbols[symbol].price);
       }
+      this.symbols[symbol].price = price;
+      this.save();
     }
-    this.symbols[symbol].price = price;
-    this.save();
+  }
+
+  getPriceChange(symbol: string): number {
+    symbol = symbol.toUpperCase();
+
+    if (this.symbols[symbol].history.length === 0) {
+      return 0;
+    }
+
+    let i = 0;
+    while (
+      i < this.symbols[symbol].history.length &&
+      this.symbols[symbol].history[i] == this.symbols[symbol].price
+    ) {
+      i++;
+    }
+
+    if (i === this.symbols[symbol].history.length) {
+      return 0;
+    } else {
+      return this.symbols[symbol].price - this.symbols[symbol].history[i];
+    }
   }
 
   async updateCache() {
