@@ -9,8 +9,12 @@ import { requestPrice } from "./stock";
 //     DB.setPrice(symbols[i], await requestPrice(symbols[i]));
 //   }
 // }
+interface isymbolsPrice {
+  [symbol: string]: number;
+}
 
 class symbolDB {
+  symbolsPrice: isymbolsPrice = {};
   symbols: isymbols = {};
   nullSymbols: Array<string> = [];
 
@@ -24,7 +28,8 @@ class symbolDB {
   }
 
   addSymbol(symbol: string, price: number) {
-    let data = { price: price, history: [] };
+    let data = { history: [] };
+    this.symbolsPrice[symbol] = price;
     this.symbols[symbol] = data;
     this.save();
   }
@@ -39,31 +44,36 @@ class symbolDB {
   }
 
   checkSymbolExists(symbol: string): boolean {
-    return symbol in this.symbols;
+    return symbol in this.symbolsPrice;
   }
 
   getPrice(symbol: string): number {
-    return this.symbols[symbol].price;
+    // return this.symbols[symbol].price;
+    return this.symbolsPrice[symbol];
   }
 
   setPrice(symbol: string, price: number) {
     if (price !== -1) {
       if (this.symbols[symbol] !== undefined) {
         if (this.symbols[symbol].history.length > 0) {
-          if (this.symbols[symbol].price !== this.symbols[symbol].history[0]) {
-            this.symbols[symbol].history.unshift(this.symbols[symbol].price);
+          if (this.symbolsPrice[symbol] !== this.symbols[symbol].history[0]) {
+            this.symbols[symbol].history.unshift(this.symbolsPrice[symbol]);
           }
         } else {
-          this.symbols[symbol].history.unshift(this.symbols[symbol].price);
+          this.symbols[symbol].history.unshift(this.symbolsPrice[symbol]);
         }
       }
-      this.symbols[symbol].price = price;
+      this.symbolsPrice[symbol] = price;
       this.save();
     }
   }
 
   getPriceChange(symbol: string): number {
     symbol = symbol.toUpperCase();
+
+    if (this.symbols[symbol] === undefined) {
+      return 0;
+    }
 
     if (this.symbols[symbol].history.length === 0) {
       return 0;
@@ -72,7 +82,7 @@ class symbolDB {
     let i = 0;
     while (
       i < this.symbols[symbol].history.length &&
-      this.symbols[symbol].history[i] === this.symbols[symbol].price
+      this.symbols[symbol].history[i] === this.symbolsPrice[symbol]
     ) {
       i++;
     }
@@ -80,12 +90,12 @@ class symbolDB {
     if (i === this.symbols[symbol].history.length) {
       return 0;
     } else {
-      return this.symbols[symbol].price - this.symbols[symbol].history[i];
+      return this.symbolsPrice[symbol] - this.symbols[symbol].history[i];
     }
   }
 
   async updateCache(a: Function) {
-    let symbols = Object.keys(this.symbols);
+    let symbols = Object.keys(this.symbolsPrice);
     for (let i = 0; i < symbols.length; i++) {
       this.setPrice(symbols[i], await requestPrice(symbols[i]));
     }
