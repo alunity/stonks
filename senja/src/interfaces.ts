@@ -7,6 +7,7 @@ interface isymbols {
 }
 
 interface isymbol {
+  price: number;
   history: Array<number>;
 }
 

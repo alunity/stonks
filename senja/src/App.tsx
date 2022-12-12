@@ -32,6 +32,8 @@ function App() {
   }, [cash, portfolio]);
 
   useEffect(() => {
+    DB.updateCache(() => setRefreshCount(refreshCount + 1));
+
     setInterval(
       () => DB.updateCache(() => setRefreshCount(refreshCount + 1)),
       600000
