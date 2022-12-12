@@ -49,14 +49,14 @@ function App() {
           <Networth cash={cash} portfolio={portfolio} refresh={loading} />
         </div>
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <Table
               data={portfolio}
               updateSymbol={(symbol: string) => setSymbol(symbol)}
               refresh={loading}
             />
           </div>
-          <div className="col-4">
+          <div className="col-md-4">
             <form onSubmit={(e) => e.preventDefault()}>
               {/* <SymbolInput callback={(text: string) => setSymbol(text)} /> */}
               <input
