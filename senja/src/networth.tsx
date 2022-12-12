@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { port } from "./interfaces";
 import { getPrice } from "./stock";
+import DB from "./symbolDB";
 
 interface worthProps {
   cash: number;
@@ -18,6 +19,7 @@ function Networth(props: worthProps) {
         total = total + (await getPrice(i)) * props.portfolio[i];
       }
       setAssets(total);
+      DB.setPortfolioValue(total);
     };
     fetchData();
   }, [props.cash, props.portfolio, props.refresh]);

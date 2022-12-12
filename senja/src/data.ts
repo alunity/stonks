@@ -8,6 +8,7 @@ interface data {
 interface dbData {
   symbols: isymbols;
   nullSymbols: Array<string>;
+  portfolioValue: Array<number>;
 }
 
 interface port {
@@ -28,15 +29,23 @@ function loadData(): data {
   }
 }
 
-function saveDB(symbols: isymbols, nullSymbols: Array<string>) {
-  let data = { symbols: symbols, nullSymbols: nullSymbols };
+function saveDB(
+  symbols: isymbols,
+  nullSymbols: Array<string>,
+  portfolioPrice: Array<number>
+) {
+  let data = {
+    symbols: symbols,
+    nullSymbols: nullSymbols,
+    portfolioValue: portfolioPrice,
+  };
   let x = JSON.stringify(data);
   localStorage.db = x;
 }
 
 function loadDB(): dbData {
   if (localStorage.db === undefined) {
-    return { symbols: {}, nullSymbols: [] };
+    return { symbols: {}, nullSymbols: [], portfolioValue: [] };
   } else {
     return JSON.parse(localStorage.db);
   }

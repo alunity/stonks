@@ -13,14 +13,20 @@ import { requestPrice } from "./stock";
 class symbolDB {
   symbols: isymbols = {};
   nullSymbols: Array<string> = [];
+  portfolioValue: Array<number> = [];
 
-  constructor(symbols: isymbols, nullSymbols: Array<string>) {
+  constructor(
+    symbols: isymbols,
+    nullSymbols: Array<string>,
+    portfolioPrice: Array<number>
+  ) {
     this.symbols = symbols;
     this.nullSymbols = nullSymbols;
+    this.portfolioValue = portfolioPrice;
   }
 
   save() {
-    saveDB(this.symbols, this.nullSymbols);
+    saveDB(this.symbols, this.nullSymbols, this.portfolioValue);
   }
 
   addSymbol(symbol: string, price: number) {
@@ -84,6 +90,25 @@ class symbolDB {
     }
   }
 
+  setPortfolioValue(value: number) {
+    if (this.portfolioValue.length === 0) {
+      this.portfolioValue.unshift(value);
+    } else {
+      if (value !== this.portfolioValue[0]) {
+        this.portfolioValue.unshift(value);
+      }
+    }
+    this.save();
+  }
+
+  getPortfolioPriceValue(): number {
+    if (this.portfolioValue.length <= 1) {
+      return 0;
+    } else {
+      return this.portfolioValue[0] - this.portfolioValue[1];
+    }
+  }
+
   async updateCache(a: Function) {
     let symbols = Object.keys(this.symbols);
     for (let i = 0; i < symbols.length; i++) {
@@ -95,6 +120,10 @@ class symbolDB {
 }
 
 let dbData = loadDB();
-const DB = new symbolDB(dbData.symbols, dbData.nullSymbols);
+const DB = new symbolDB(
+  dbData.symbols,
+  dbData.nullSymbols,
+  dbData.portfolioValue
+);
 
 export default DB;
