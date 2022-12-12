@@ -5,7 +5,7 @@ import { getPrice } from "./stock";
 interface worthProps {
   cash: number;
   portfolio: port;
-  refresh: number;
+  refresh: boolean;
 }
 
 function Networth(props: worthProps) {

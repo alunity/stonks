@@ -6,7 +6,7 @@ import DB from "./symbolDB";
 interface tableProps {
   updateSymbol: Function;
   data: port;
-  refresh: number;
+  refresh: boolean;
 }
 
 interface row {

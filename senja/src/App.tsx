@@ -11,7 +11,7 @@ function App() {
   let [symbol, setSymbol] = useState("");
   let [cash, setCash] = useState(loadData().cash);
   let [portfolio, setPortofolio] = useState<port>(loadData().portfolio);
-  let [refreshCount, setRefreshCount] = useState(0);
+  let [loading, setloading] = useState(false);
   // const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   function updatePorfolio(symbol: string, amount: number): void {
@@ -32,12 +32,13 @@ function App() {
   }, [cash, portfolio]);
 
   useEffect(() => {
-    DB.updateCache(() => setRefreshCount(refreshCount + 1));
+    setloading(true);
+    DB.updateCache(() => setloading(false));
 
-    setInterval(
-      () => DB.updateCache(() => setRefreshCount(refreshCount + 1)),
-      600000
-    );
+    setInterval(() => {
+      setloading(true);
+      DB.updateCache(() => setloading(false));
+    }, 600000);
   }, []);
 
   return (
@@ -45,14 +46,14 @@ function App() {
       <div className="container">
         <div className="row">
           <h1 className="display-1">Stonks</h1>
-          <Networth cash={cash} portfolio={portfolio} refresh={refreshCount} />
+          <Networth cash={cash} portfolio={portfolio} refresh={loading} />
         </div>
         <div className="row">
           <div className="col-8">
             <Table
               data={portfolio}
               updateSymbol={(symbol: string) => setSymbol(symbol)}
-              refresh={refreshCount}
+              refresh={loading}
             />
           </div>
           <div className="col-4">
@@ -72,6 +73,17 @@ function App() {
               cash={cash}
               portfolio={portfolio}
             />
+            {loading && (
+              <div className="card">
+                <h5>Updating stock prices</h5>
+                <div className="d-flex justify-content-center">
+                  <div
+                    className="spinner-border text-primary "
+                    role="status"
+                  ></div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
