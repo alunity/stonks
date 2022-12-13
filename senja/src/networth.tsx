@@ -19,7 +19,7 @@ function Networth(props: worthProps) {
         total = total + (await getPrice(i)) * props.portfolio[i];
       }
       setAssets(total);
-      DB.setPortfolioValue(total);
+      DB.setNetworthValue(total + props.cash);
     };
     fetchData();
   }, [props.cash, props.portfolio, props.refresh]);

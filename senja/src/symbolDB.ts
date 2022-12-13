@@ -13,7 +13,7 @@ import { requestPrice } from "./stock";
 class symbolDB {
   symbols: isymbols = {};
   nullSymbols: Array<string> = [];
-  portfolioValue: Array<number> = [];
+  networthValue: Array<number> = [];
 
   constructor(
     symbols: isymbols,
@@ -22,11 +22,11 @@ class symbolDB {
   ) {
     this.symbols = symbols;
     this.nullSymbols = nullSymbols;
-    this.portfolioValue = portfolioPrice;
+    this.networthValue = portfolioPrice;
   }
 
   save() {
-    saveDB(this.symbols, this.nullSymbols, this.portfolioValue);
+    saveDB(this.symbols, this.nullSymbols, this.networthValue);
   }
 
   addSymbol(symbol: string, price: number) {
@@ -90,22 +90,22 @@ class symbolDB {
     }
   }
 
-  setPortfolioValue(value: number) {
-    if (this.portfolioValue.length === 0) {
-      this.portfolioValue.unshift(value);
+  setNetworthValue(value: number) {
+    if (this.networthValue.length === 0) {
+      this.networthValue.unshift(value);
     } else {
-      if (value !== this.portfolioValue[0]) {
-        this.portfolioValue.unshift(value);
+      if (value !== this.networthValue[0]) {
+        this.networthValue.unshift(value);
       }
     }
     this.save();
   }
 
-  getPortfolioPriceValue(): number {
-    if (this.portfolioValue.length <= 1) {
+  getNetworthPriceChange(): number {
+    if (this.networthValue.length <= 1) {
       return 0;
     } else {
-      return this.portfolioValue[0] - this.portfolioValue[1];
+      return this.networthValue[0] - this.networthValue[1];
     }
   }
 
@@ -123,7 +123,7 @@ let dbData = loadDB();
 const DB = new symbolDB(
   dbData.symbols,
   dbData.nullSymbols,
-  dbData.portfolioValue
+  dbData.networthValue
 );
 
 export default DB;

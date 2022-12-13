@@ -64,6 +64,7 @@ function Table(props: tableProps) {
     );
   });
 
+  let networthChange = DB.getNetworthPriceChange();
   return (
     <>
       <table className="table table-hover">
@@ -79,7 +80,20 @@ function Table(props: tableProps) {
         <tbody>
           {rows}
           <tr className="table-secondary">
-            <td></td>
+            <td
+              className={
+                networthChange > 0
+                  ? "text-success fw-bold"
+                  : networthChange < 0
+                  ? "text-danger fw-bold"
+                  : "fw-bold"
+              }
+            >
+              {networthChange === 0
+                ? "-"
+                : (networthChange > 0 ? "↑" : "↓") + networthChange.toFixed(2)}
+            </td>
+
             <td>Total</td>
             <td>{total[0]}</td>
             <td>{total[1].toFixed(2)}</td>

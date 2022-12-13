@@ -8,7 +8,7 @@ interface data {
 interface dbData {
   symbols: isymbols;
   nullSymbols: Array<string>;
-  portfolioValue: Array<number>;
+  networthValue: Array<number>;
 }
 
 interface port {
@@ -32,12 +32,12 @@ function loadData(): data {
 function saveDB(
   symbols: isymbols,
   nullSymbols: Array<string>,
-  portfolioPrice: Array<number>
+  networthValue: Array<number>
 ) {
   let data = {
     symbols: symbols,
     nullSymbols: nullSymbols,
-    portfolioValue: portfolioPrice,
+    networthValue: networthValue,
   };
   let x = JSON.stringify(data);
   localStorage.db = x;
@@ -45,7 +45,7 @@ function saveDB(
 
 function loadDB(): dbData {
   if (localStorage.db === undefined) {
-    return { symbols: {}, nullSymbols: [], portfolioValue: [] };
+    return { symbols: {}, nullSymbols: [], networthValue: [] };
   } else {
     return JSON.parse(localStorage.db);
   }
