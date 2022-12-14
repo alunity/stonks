@@ -21,15 +21,40 @@ function StockView(props: viewerProps) {
   }
 
   function transaction(amount: number) {
-    if (buying) {
-      if (stockData[1] * amount <= props.cash) {
+    // if (buying) {
+    //   if (stockData[1] * amount <= props.cash) {
+    //     props.updateCash(-(stockData[1] * amount));
+    //     props.updatePorfolio(stockData[0], amount);
+    //   }
+    // } else {
+    //   if (props.portfolio[stockData[0]] >= amount) {
+    //     props.updateCash(stockData[1] * amount);
+    //     props.updatePorfolio(stockData[0], -amount);
+    //   }
+    // }
+    if (canCompleteTransaction(amount)) {
+      if (buying) {
         props.updateCash(-(stockData[1] * amount));
         props.updatePorfolio(stockData[0], amount);
+      } else {
+        props.updateCash(stockData[1] * amount);
+        props.updatePorfolio(stockData[0], -amount);
+      }
+    }
+  }
+
+  function canCompleteTransaction(amount: number) {
+    if (buying) {
+      if (stockData[1] * amount <= props.cash) {
+        return true;
+      } else {
+        return false;
       }
     } else {
       if (props.portfolio[stockData[0]] >= amount) {
-        props.updateCash(stockData[1] * amount);
-        props.updatePorfolio(stockData[0], -amount);
+        return true;
+      } else {
+        return false;
       }
     }
   }
@@ -47,7 +72,7 @@ function StockView(props: viewerProps) {
           <h2>{stockData[0].toUpperCase()}</h2>
           {stockData[1] > -1 && (
             <>
-              <p>{stockData[1]}</p>
+              <p>${stockData[1].toFixed(2)}</p>
               <button
                 className="btn btn-primary"
                 onClick={() => setBuy(!buying)}
@@ -61,10 +86,19 @@ function StockView(props: viewerProps) {
                   value={amount}
                   onChange={(e) => setAmount(+e.target.value)}
                 ></input>
-                <button onClick={() => transaction(amount)}>
+                <button
+                  className={
+                    "btn " +
+                    (buying ? "btn-danger" : "btn-success") +
+                    (canCompleteTransaction(amount) ? "" : " disabled")
+                  }
+                  onClick={() => transaction(amount)}
+                >
                   {buying ? "buy" : "sell"}
                 </button>
-                {amount !== undefined && <p>Cost: {amount * stockData[1]} </p>}
+                {amount !== undefined && (
+                  <p>Cost: ${(amount * stockData[1]).toFixed(2)} </p>
+                )}
               </span>
             </>
           )}
