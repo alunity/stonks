@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import getSymbolData from "./yfinance";
+import { getSymbolData, iSymbolData } from "./yfinance";
 
 interface iProps {
   symbol: string;
 }
 
 function SymbolInfo(props: iProps) {
-  let [data, setData] = useState<null | object>(null);
+  let [data, setData] = useState<null | iSymbolData>(null);
 
   useEffect(() => {
     async function getData() {
