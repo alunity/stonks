@@ -1,6 +1,9 @@
 interface iSymbolData {
   chart: {
-    error: boolean;
+    error: null | {
+      code: string;
+      description: string;
+    };
     result: [
       {
         indicators: {
@@ -70,15 +73,98 @@ interface iSymbolData {
   };
 }
 
-async function getSymbolData(symbol: string): Promise<iSymbolData> {
-  let response = fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(
-      "https://query1.finance.yahoo.com/v8/finance/chart/" +
-        symbol.toUpperCase()
-    )}`
-  );
-  let data: iSymbolData = JSON.parse((await (await response).json()).contents);
-  return data;
+async function getSymbolData(
+  symbol: string,
+  signal: AbortSignal | undefined = undefined
+): Promise<iSymbolData> {
+  try {
+    let response = fetch(
+      `https://api.allorigins.win/get?url=${encodeURIComponent(
+        "https://query1.finance.yahoo.com/v8/finance/chart/" +
+          symbol.toUpperCase()
+      )}`,
+      { signal: signal }
+    );
+    let data: iSymbolData = JSON.parse(
+      (await (await response).json()).contents
+    );
+    return data;
+  } catch (e) {
+    return {
+      chart: {
+        error: {
+          code: "Abort",
+          description: "Epic description",
+        },
+        result: [
+          {
+            indicators: {
+              quote: [
+                {
+                  high: [],
+                  close: [],
+                  low: [],
+                  open: [],
+                  volume: [],
+                },
+              ],
+            },
+            meta: {
+              chartPreviousClose: 0,
+              currency: "",
+              currentTradingPeriod: {
+                post: {
+                  timezone: "",
+                  end: 0,
+                  start: 0,
+                  gmtoffset: 0,
+                },
+                pre: {
+                  timezone: "",
+                  end: 0,
+                  start: 0,
+                  gmtoffset: 0,
+                },
+                regular: {
+                  timezone: "",
+                  end: 0,
+                  start: 0,
+                  gmtoffset: 0,
+                },
+              },
+              dataGranularity: "",
+              exchangeName: "",
+              exchangeTimezoneName: "",
+              firstTradeDate: 0,
+              gmtoffset: 0,
+              instrumentType: "",
+              previousClose: 0,
+              priceHint: 0,
+              range: "",
+              regularMarketPrice: 0,
+              regularMarketTime: 0,
+              scale: 0,
+              symbol: "",
+              timezone: "",
+
+              tradingPeriods: [
+                [
+                  {
+                    end: 0,
+                    gmtoffset: 0,
+                    start: 0,
+                    timezone: "",
+                  },
+                ],
+              ],
+              validRanges: [],
+            },
+            timestamp: [],
+          },
+        ],
+      },
+    };
+  }
 }
 
 export { getSymbolData, type iSymbolData };
