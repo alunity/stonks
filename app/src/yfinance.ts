@@ -89,11 +89,18 @@ async function getSymbolData(
       (await (await response).json()).contents
     );
     return data;
-  } catch (e) {
+  } catch (e: any) {
+    let message = "";
+    if (e.message === "Failed to fetch") {
+      message = "Failed";
+    } else if (e.message === "The user aborted a request.") {
+      message = "Abort";
+    }
+
     return {
       chart: {
         error: {
-          code: "Abort",
+          code: message,
           description: "Epic description",
         },
         result: [
