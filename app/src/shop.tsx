@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { iSymbolData } from "./yfinance";
 
 interface iShop {
   selectedSymbol: string;
   setCurrentSymbol: Function;
+  data: iSymbolData | null;
+  loading: boolean;
 }
 
 function Shop(props: iShop) {
@@ -70,8 +73,9 @@ function Shop(props: iShop) {
               </div>
             </div>
             <p className="card-text">
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
+              {props.data !== null && !props.loading && (
+                <p>{props.data.chart.result[0].meta.regularMarketPrice}</p>
+              )}
             </p>
           </div>
         </div>

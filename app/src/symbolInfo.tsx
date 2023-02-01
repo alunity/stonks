@@ -3,6 +3,8 @@ import { getSymbolData, iSymbolData } from "./yfinance";
 
 interface iProps {
   symbol: string;
+  data: iSymbolData | null;
+  loading: boolean;
 }
 
 interface iController {
@@ -11,91 +13,62 @@ interface iController {
 }
 
 function SymbolInfo(props: iProps) {
-  let [data, setData] = useState<null | iSymbolData>(null);
-  let [loading, setLoading] = useState(false);
-  let abortController = useRef<iController>();
-
-  async function getData() {
-    setLoading(true);
-    let abort = new AbortController();
-    abortController.current = [props.symbol, abort];
-    setData(await getSymbolData(props.symbol, abort.signal));
-  }
-
-  useEffect(() => {
-    if (props.symbol !== "") {
-      if (abortController.current !== undefined) {
-        if (abortController.current[0] !== props.symbol) {
-          abortController.current[1].abort();
-        }
-      }
-
-      setData(null);
-      getData();
-    }
-  }, [props.symbol]);
-
-  useEffect(() => {
-    if (data !== null) {
-      if (data.chart.error === null || data.chart.error.code === "Not Found") {
-        setLoading(false);
-      }
-    }
-  }, [data]);
-
   return (
     <>
       <div className="card text-light">
         <div className="card-header">Stock Symbol</div>
-        {data !== null && (
+        {props.data !== null && (
           <>
-            {!loading && (
+            {!props.loading && (
               <div className="card-body">
-                {data.chart.error === null && (
+                {props.data.chart.error === null && (
                   <>
                     <h5 className="card-title">
-                      {data.chart.result[0].meta.symbol}
+                      {props.data.chart.result[0].meta.symbol}
                     </h5>
                     <table className="table">
                       <tbody>
                         <tr>
                           <td>
                             Regular Market Price (
-                            {data.chart.result[0].meta.currency})
+                            {props.data.chart.result[0].meta.currency})
                           </td>
                           <td>
-                            {data.chart.result[0].meta.regularMarketPrice.toFixed(
+                            {props.data.chart.result[0].meta.regularMarketPrice.toFixed(
                               2
                             )}
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            Previous close ({data.chart.result[0].meta.currency}
-                            )
+                            Previous close (
+                            {props.data.chart.result[0].meta.currency})
                           </td>
                           <td>
-                            {data.chart.result[0].meta.previousClose.toFixed(2)}
+                            {props.data.chart.result[0].meta.previousClose.toFixed(
+                              2
+                            )}
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </>
                 )}
-                {data.chart.error?.code === "Not Found" &&
+                {props.data.chart.error?.code === "Not Found" &&
                   props.symbol !== "" && (
                     <h5 className="card-title">This symbol can't be found</h5>
                   )}
-                {data.chart.error?.code === "Failed" && props.symbol !== "" && (
-                  <h5 className="card-title">
-                    This information can't be fetched at the moment
-                  </h5>
-                )}
+                {props.data.chart.error?.code === "Failed" &&
+                  props.symbol !== "" && (
+                    <h5 className="card-title">
+                      This information can't be fetched at the moment
+                    </h5>
+                  )}
               </div>
             )}
           </>
         )}
-        {loading && (
+        {props.loading && (
           <div className="card" aria-hidden="true">
             <div className="card-body">
               <h5 className="card-title placeholder-glow">
