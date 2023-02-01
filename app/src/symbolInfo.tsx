@@ -41,19 +41,6 @@ function SymbolInfo(props: iProps) {
         setLoading(false);
       }
     }
-
-    // if (data?.chart.error?.code === "Failed" && props.symbol !== "") {
-    //   if (abortController.current !== undefined) {
-    //     if (abortController.current[0] === props.symbol) {
-    //       let timeout = setTimeout(() => {
-    //         getData();
-    //       }, 10000);
-    //       return () => {
-    //         clearTimeout(timeout);
-    //       };
-    //     }
-    //   }
-    // }
   }, [data]);
 
   return (
