@@ -73,6 +73,10 @@ interface iSymbolData {
   };
 }
 
+function timeout(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function getSymbolData(
   symbol: string,
   signal: AbortSignal | undefined = undefined
@@ -92,85 +96,90 @@ async function getSymbolData(
   } catch (e: any) {
     let message = "";
     if (e.message === "Failed to fetch") {
-      message = "Failed";
-    } else if (e.message === "The user aborted a request.") {
-      message = "Abort";
-    }
-
-    return {
-      chart: {
-        error: {
-          code: message,
-          description: "Epic description",
-        },
-        result: [
-          {
-            indicators: {
-              quote: [
-                {
-                  high: [],
-                  close: [],
-                  low: [],
-                  open: [],
-                  volume: [],
-                },
-              ],
-            },
-            meta: {
-              chartPreviousClose: 0,
-              currency: "",
-              currentTradingPeriod: {
-                post: {
-                  timezone: "",
-                  end: 0,
-                  start: 0,
-                  gmtoffset: 0,
-                },
-                pre: {
-                  timezone: "",
-                  end: 0,
-                  start: 0,
-                  gmtoffset: 0,
-                },
-                regular: {
-                  timezone: "",
-                  end: 0,
-                  start: 0,
-                  gmtoffset: 0,
-                },
-              },
-              dataGranularity: "",
-              exchangeName: "",
-              exchangeTimezoneName: "",
-              firstTradeDate: 0,
-              gmtoffset: 0,
-              instrumentType: "",
-              previousClose: 0,
-              priceHint: 0,
-              range: "",
-              regularMarketPrice: 0,
-              regularMarketTime: 0,
-              scale: 0,
-              symbol: "",
-              timezone: "",
-
-              tradingPeriods: [
-                [
+      console.log("retry");
+      await timeout(5000);
+      console.log("retrying");
+      return getSymbolData(symbol, signal);
+      // message = "Failed";
+    } else {
+      if (e.message === "The user aborted a request.") {
+        message = "Abort";
+      }
+      return {
+        chart: {
+          error: {
+            code: message,
+            description: "Epic description",
+          },
+          result: [
+            {
+              indicators: {
+                quote: [
                   {
-                    end: 0,
-                    gmtoffset: 0,
-                    start: 0,
-                    timezone: "",
+                    high: [],
+                    close: [],
+                    low: [],
+                    open: [],
+                    volume: [],
                   },
                 ],
-              ],
-              validRanges: [],
+              },
+              meta: {
+                chartPreviousClose: 0,
+                currency: "",
+                currentTradingPeriod: {
+                  post: {
+                    timezone: "",
+                    end: 0,
+                    start: 0,
+                    gmtoffset: 0,
+                  },
+                  pre: {
+                    timezone: "",
+                    end: 0,
+                    start: 0,
+                    gmtoffset: 0,
+                  },
+                  regular: {
+                    timezone: "",
+                    end: 0,
+                    start: 0,
+                    gmtoffset: 0,
+                  },
+                },
+                dataGranularity: "",
+                exchangeName: "",
+                exchangeTimezoneName: "",
+                firstTradeDate: 0,
+                gmtoffset: 0,
+                instrumentType: "",
+                previousClose: 0,
+                priceHint: 0,
+                range: "",
+                regularMarketPrice: 0,
+                regularMarketTime: 0,
+                scale: 0,
+                symbol: "",
+                timezone: "",
+
+                tradingPeriods: [
+                  [
+                    {
+                      end: 0,
+                      gmtoffset: 0,
+                      start: 0,
+                      timezone: "",
+                    },
+                  ],
+                ],
+                validRanges: [],
+              },
+              timestamp: [],
             },
-            timestamp: [],
-          },
-        ],
-      },
-    };
+          ],
+        },
+      };
+    }
   }
 }
 
