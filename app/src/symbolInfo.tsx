@@ -21,39 +21,41 @@ function SymbolInfo(props: iProps) {
           <>
             {!props.loading && (
               <div className="card-body">
-                {props.data.chart.error === null && (
-                  <>
-                    <h5 className="card-title">
-                      {props.data.chart.result[0].meta.symbol}
-                    </h5>
-                    <table className="table">
-                      <tbody>
-                        <tr>
-                          <td>
-                            Regular Market Price (
-                            {props.data.chart.result[0].meta.currency})
-                          </td>
-                          <td>
-                            {props.data.chart.result[0].meta.regularMarketPrice.toFixed(
-                              2
-                            )}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            Previous close (
-                            {props.data.chart.result[0].meta.currency})
-                          </td>
-                          <td>
-                            {props.data.chart.result[0].meta.previousClose.toFixed(
-                              2
-                            )}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </>
-                )}
+                {props.data.chart.error === null &&
+                  props.data.chart.result[0].meta.regularMarketPrice !==
+                    undefined && (
+                    <>
+                      <h5 className="card-title">
+                        {props.data.chart.result[0].meta.symbol}
+                      </h5>
+                      <table className="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              Regular Market Price (
+                              {props.data.chart.result[0].meta.currency})
+                            </td>
+                            <td>
+                              {props.data.chart.result[0].meta.regularMarketPrice.toFixed(
+                                2
+                              )}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              Previous close (
+                              {props.data.chart.result[0].meta.currency})
+                            </td>
+                            <td>
+                              {props.data.chart.result[0].meta.previousClose.toFixed(
+                                2
+                              )}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </>
+                  )}
                 {props.data.chart.error?.code === "Not Found" &&
                   props.symbol !== "" && (
                     <h5 className="card-title">This symbol can't be found</h5>

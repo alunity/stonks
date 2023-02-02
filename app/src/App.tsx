@@ -6,6 +6,7 @@ import Shop from "./shop";
 import { useEffect, useRef, useState } from "react";
 import { iSymbolData, getSymbolData } from "./yfinance";
 import iPortfolio from "./iPortfolio";
+import Table from "./table";
 
 interface iController {
   [0]: string;
@@ -89,6 +90,10 @@ function App() {
             amount: number,
             buying: boolean
           ) => performTransaction(symbol, amount, buying)}
+        />
+        <Table
+          portfolio={portfolio}
+          setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
         />
       </div>
     </div>

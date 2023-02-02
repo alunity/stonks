@@ -34,7 +34,7 @@ function Shop(props: iShop) {
             +numberShares * props.data?.chart.result[0].meta.regularMarketPrice
           );
         } else {
-          if (props.selectedSymbol in props.portfolio) {
+          if (props.data.chart.result[0].meta.symbol in props.portfolio) {
             return props.portfolio[props.selectedSymbol] >= +numberShares;
           }
         }
@@ -121,7 +121,7 @@ function Shop(props: iShop) {
                 onClick={() => {
                   if (canPerformTransaction(buying)) {
                     props.performTransaction(
-                      props.selectedSymbol,
+                      props.data?.chart.result[0].meta.symbol,
                       +numberShares,
                       buying
                     );
