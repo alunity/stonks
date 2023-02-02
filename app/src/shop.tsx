@@ -1,4 +1,5 @@
 import { useState } from "react";
+import iPortfolio from "./iPortfolio";
 import { iSymbolData } from "./yfinance";
 
 interface iShop {
@@ -6,6 +7,9 @@ interface iShop {
   setCurrentSymbol: Function;
   data: iSymbolData | null;
   loading: boolean;
+  portfolio: iPortfolio;
+  cash: number;
+  performTransaction: Function;
 }
 
 function Shop(props: iShop) {
@@ -15,6 +19,28 @@ function Shop(props: iShop) {
   // Check and remove negative
   if (+numberShares < 0) {
     setNumberShares(Math.abs(+numberShares).toString());
+  }
+  if (+numberShares % 1 !== 0) {
+    setNumberShares(Math.floor(+numberShares).toString());
+  }
+
+  function canPerformTransaction(buying: boolean): boolean {
+    if (+numberShares === 0) return false;
+    if (props.data !== null) {
+      if (props.data.chart.error === null) {
+        if (buying) {
+          return (
+            props.cash >=
+            +numberShares * props.data?.chart.result[0].meta.regularMarketPrice
+          );
+        } else {
+          if (props.selectedSymbol in props.portfolio) {
+            return props.portfolio[props.selectedSymbol] >= +numberShares;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   return (
@@ -72,10 +98,38 @@ function Shop(props: iShop) {
                 </div>
               </div>
             </div>
-            <p className="card-text">
-              {props.data !== null && !props.loading && (
-                <p>{props.data.chart.result[0].meta.regularMarketPrice}</p>
-              )}
+            <p className="card-text text-center">
+              {props.data !== null &&
+                !props.loading &&
+                props.data.chart.error === null &&
+                +numberShares !== 0 && (
+                  <span>
+                    {(
+                      +props.data.chart.result[0].meta.regularMarketPrice *
+                      +numberShares
+                    ).toFixed(2)}
+                  </span>
+                )}
+            </p>
+            <p className="text-center">
+              <button
+                className={
+                  "btn btn-" +
+                  (buying ? "danger" : "success") +
+                  (canPerformTransaction(buying) ? "" : " disabled")
+                }
+                onClick={() => {
+                  if (canPerformTransaction(buying)) {
+                    props.performTransaction(
+                      props.selectedSymbol,
+                      +numberShares,
+                      buying
+                    );
+                  }
+                }}
+              >
+                {buying ? "Buy" : "Sell"}
+              </button>
             </p>
           </div>
         </div>

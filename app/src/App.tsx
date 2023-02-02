@@ -5,6 +5,7 @@ import SymbolInfo from "./symbolInfo";
 import Shop from "./shop";
 import { useEffect, useRef, useState } from "react";
 import { iSymbolData, getSymbolData } from "./yfinance";
+import iPortfolio from "./iPortfolio";
 
 interface iController {
   [0]: string;
@@ -14,9 +15,35 @@ interface iController {
 function App() {
   let [selectedSymbol, setSelectedSymbol] = useState("");
 
+  let [cash, setCash] = useState(1000);
+  let [portfolio, setPortfolio] = useState<iPortfolio>({});
+
   let [data, setData] = useState<null | iSymbolData>(null);
   let [loading, setLoading] = useState(false);
   let abortController = useRef<iController>();
+
+  function performTransaction(
+    symbol: string,
+    amount: number,
+    buying: boolean
+  ): void {
+    if (selectedSymbol === "" || data === null || data.chart.error !== null)
+      return;
+
+    let port = JSON.parse(JSON.stringify(portfolio));
+    if (buying) {
+      setCash(cash - +data.chart.result[0].meta.regularMarketPrice * amount);
+      if (symbol in port) {
+        port[symbol] += amount;
+      } else {
+        port[symbol] = amount;
+      }
+    } else {
+      setCash(cash + +data.chart.result[0].meta.regularMarketPrice * amount);
+      port[symbol] -= amount;
+    }
+    setPortfolio(port);
+  }
 
   async function getData() {
     setLoading(true);
@@ -55,6 +82,13 @@ function App() {
           selectedSymbol={selectedSymbol}
           data={data}
           loading={loading}
+          portfolio={portfolio}
+          cash={cash}
+          performTransaction={(
+            symbol: string,
+            amount: number,
+            buying: boolean
+          ) => performTransaction(symbol, amount, buying)}
         />
       </div>
     </div>
