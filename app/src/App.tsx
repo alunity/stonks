@@ -101,7 +101,7 @@ function App() {
           portfolio={portfolio}
           setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
         />
-        <Networth />
+        <Networth cash={cash} portfolio={portfolio} />
       </div>
     </div>
   );

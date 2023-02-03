@@ -27,11 +27,13 @@ function Table(props: iTable) {
       let dat = [];
       for (let i in props.portfolio) {
         let symbolData = await getSymbolData(i);
-        dat.push({
-          symbol: symbolData.chart.result[0].meta.symbol,
-          amount: props.portfolio[i],
-          price: symbolData.chart.result[0].meta.regularMarketPrice,
-        });
+        if (symbolData.chart.error === null) {
+          dat.push({
+            symbol: symbolData.chart.result[0].meta.symbol,
+            amount: props.portfolio[i],
+            price: symbolData.chart.result[0].meta.regularMarketPrice,
+          });
+        }
       }
       setData(dat);
     }
