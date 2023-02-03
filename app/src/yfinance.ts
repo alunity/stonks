@@ -86,6 +86,8 @@ async function getSymbolData(
       `https://api.allorigins.win/get?url=${encodeURIComponent(
         "https://query1.finance.yahoo.com/v8/finance/chart/" +
           symbol.toUpperCase()
+      )}?region=US&lang=en-US&includePrePost=false&interval=2m&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance?nocache=${Math.floor(
+        Date.now() / 1000 / 86400
       )}`,
       { signal: signal }
     );
