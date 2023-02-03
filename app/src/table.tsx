@@ -63,10 +63,10 @@ function Table(props: iTable) {
           <strong>{total.amount}</strong>
         </td>
         <td>
-          <strong>{total.price}</strong>
+          <strong>{total.price.toFixed(2)}</strong>
         </td>
         <td>
-          <strong>{total.totalPrice}</strong>
+          <strong>{total.totalPrice.toFixed(2)}</strong>
         </td>
       </tr>
     );
@@ -76,7 +76,6 @@ function Table(props: iTable) {
     <>
       <div className="card text-light">
         <div className="card-header">Table</div>
-
         <div className="card-body">
           <table className="table table-hover">
             <thead>

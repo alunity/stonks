@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { iSymbolData, getSymbolData } from "./yfinance";
 import iPortfolio from "./iPortfolio";
 import Table from "./table";
+import Networth from "./networth";
+import { loadData, saveData } from "./localstorage";
 
 interface iController {
   [0]: string;
@@ -16,12 +18,16 @@ interface iController {
 function App() {
   let [selectedSymbol, setSelectedSymbol] = useState("");
 
-  let [cash, setCash] = useState(1000);
-  let [portfolio, setPortfolio] = useState<iPortfolio>({});
+  let [cash, setCash] = useState(loadData().cash);
+  let [portfolio, setPortfolio] = useState<iPortfolio>(loadData().portfolio);
 
   let [data, setData] = useState<null | iSymbolData>(null);
   let [loading, setLoading] = useState(false);
   let abortController = useRef<iController>();
+
+  useEffect(() => {
+    saveData(cash, portfolio);
+  }, [cash, portfolio]);
 
   function performTransaction(
     symbol: string,
@@ -95,6 +101,7 @@ function App() {
           portfolio={portfolio}
           setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
         />
+        <Networth />
       </div>
     </div>
   );
