@@ -48,6 +48,10 @@ function App() {
     } else {
       setCash(cash + +data.chart.result[0].meta.regularMarketPrice * amount);
       port[symbol] -= amount;
+
+      if (port[symbol] === 0) {
+        delete port[symbol];
+      }
     }
     setPortfolio(port);
   }

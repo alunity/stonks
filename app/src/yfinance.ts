@@ -98,7 +98,7 @@ async function getSymbolData(
   } catch (e: any) {
     let message = "";
     if (e.message === "Failed to fetch") {
-      await timeout(5000);
+      await timeout(7500);
       return getSymbolData(symbol, signal);
       // message = "Failed";
     } else {

@@ -24,10 +24,12 @@ interface iTotal {
 
 function Table(props: iTable) {
   let [data, setData] = useState<Array<row>>();
+  let [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getData() {
       let dat = [];
+      setLoading(true);
       for (let i in props.portfolio) {
         let symbolData = await getSymbolData(i);
         if (symbolData.chart.error === null) {
@@ -44,6 +46,12 @@ function Table(props: iTable) {
 
     getData();
   }, [props.portfolio]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setLoading(false);
+    }
+  }, [data]);
 
   useEffect(() => {
     // Initialize tooltips
@@ -165,26 +173,36 @@ function Table(props: iTable) {
       <div className="card text-light">
         <div className="card-header">Table</div>
         <div className="card-body">
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">symbol</th>
-                <th scope="col">
-                  <span
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Change from previous market close"
-                  >
-                    change
-                  </span>
-                </th>
-                <th scope="col">amount</th>
-                <th scope="col">price</th>
-                <th scope="col">total</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </table>
+          {!loading && (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">symbol</th>
+                  <th scope="col">
+                    <span
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-title="Change from previous market close"
+                    >
+                      change
+                    </span>
+                  </th>
+                  <th scope="col">amount</th>
+                  <th scope="col">price</th>
+                  <th scope="col">total</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </table>
+          )}
+          {loading && (
+            <div
+              className="position-relative start-50 spinner-border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          )}
         </div>
       </div>
     </>
