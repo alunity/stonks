@@ -26,43 +26,51 @@ function SymbolInfo(props: iProps) {
               <div className="card-body">
                 {props.data.chart.error === null &&
                   props.data.chart.result[0].meta.regularMarketPrice !==
-                    undefined &&
-                  props.data.chart.result[0].meta.currency === "USD" && (
+                    undefined && (
                     <>
                       <h5 className="card-title">
                         {props.data.chart.result[0].meta.symbol}
                       </h5>
-                      <table className="table">
-                        <tbody>
-                          <tr>
-                            <td>
-                              Regular Market Price (
-                              {props.data.chart.result[0].meta.currency})
-                            </td>
-                            <td>
-                              {props.data.chart.result[0].meta.regularMarketPrice.toFixed(
-                                2
-                              )}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Previous close (
-                              {props.data.chart.result[0].meta.currency})
-                            </td>
-                            <td>
-                              {props.data.chart.result[0].meta.chartPreviousClose.toFixed(
-                                2
-                              )}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <Graph
-                        data={props.data}
-                        range={props.range}
-                        setRange={(value: string) => props.setRange(value)}
-                      />
+                      {props.data.chart.result[0].meta.currency === "USD" && (
+                        <>
+                          <table className="table">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  Regular Market Price (
+                                  {props.data.chart.result[0].meta.currency})
+                                </td>
+                                <td>
+                                  {props.data.chart.result[0].meta.regularMarketPrice.toFixed(
+                                    2
+                                  )}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Previous close (
+                                  {props.data.chart.result[0].meta.currency})
+                                </td>
+                                <td>
+                                  {props.data.chart.result[0].meta.chartPreviousClose.toFixed(
+                                    2
+                                  )}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <Graph
+                            data={props.data}
+                            range={props.range}
+                            setRange={(value: string) => props.setRange(value)}
+                          />
+                        </>
+                      )}
+                      {props.data.chart.result[0].meta.currency !== "USD" && (
+                        <h5 className="card-title">
+                          Only symbols valued in USD are available
+                        </h5>
+                      )}
                     </>
                   )}
                 {props.symbol !== "" && (

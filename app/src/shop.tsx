@@ -27,6 +27,9 @@ function Shop(props: iShop) {
   function canPerformTransaction(buying: boolean): boolean {
     if (+numberShares === 0) return false;
     if (props.data !== null) {
+      if (props.data?.chart.result[0].meta.currency !== "USD") {
+        return false;
+      }
       if (props.data.chart.error === null) {
         if (buying) {
           return (
@@ -102,7 +105,8 @@ function Shop(props: iShop) {
               {props.data !== null &&
                 !props.loading &&
                 props.data.chart.error === null &&
-                +numberShares !== 0 && (
+                +numberShares !== 0 &&
+                props.data.chart.result[0].meta.currency === "USD" && (
                   <span>
                     {(
                       +props.data.chart.result[0].meta.regularMarketPrice *
