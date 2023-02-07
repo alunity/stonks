@@ -73,21 +73,36 @@ interface iSymbolData {
   };
 }
 
+const intervals: { [property: string]: string } = {
+  "1d": "2m",
+  "5d": "15m",
+  "1mo": "30m",
+  "6mo": "1d",
+  "1y": "1wk",
+  "5y": "1wk",
+  max: "1mo",
+};
+
 function timeout(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function getSymbolData(
   symbol: string,
-  signal: AbortSignal | undefined = undefined
+  signal: AbortSignal | undefined = undefined,
+  range: string = "1d"
 ): Promise<iSymbolData> {
   try {
     let response = fetch(
       `https://api.allorigins.win/get?url=${encodeURIComponent(
         "https://query1.finance.yahoo.com/v8/finance/chart/" +
-          symbol.toUpperCase()
-      )}?region=US&lang=en-US&includePrePost=false&interval=2m&useYfid=true&range=1d&corsDomain=finance.yahoo.com&.tsrc=finance?nocache=${Math.floor(
-        Date.now() / 1000 / 86400
+          symbol.toUpperCase() +
+          "?region=US&lang=en-US&includePrePost=false&interval=" +
+          intervals[range] +
+          "&useYfid=true&range=" +
+          range +
+          "&corsDomain=finance.yahoo.com&.tsrc=finance?nocache=" +
+          Math.floor(Date.now() / 1000 / 86400)
       )}`,
       { signal: signal }
     );

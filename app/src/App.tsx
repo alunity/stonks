@@ -25,6 +25,8 @@ function App() {
   let [loading, setLoading] = useState(false);
   let abortController = useRef<iController>();
 
+  let [range, setRange] = useState("1d");
+
   useEffect(() => {
     saveData(cash, portfolio);
   }, [cash, portfolio]);
@@ -60,7 +62,7 @@ function App() {
     setLoading(true);
     let abort = new AbortController();
     abortController.current = [selectedSymbol, abort];
-    setData(await getSymbolData(selectedSymbol, abort.signal));
+    setData(await getSymbolData(selectedSymbol, abort.signal, range));
   }
 
   useEffect(() => {
@@ -74,7 +76,7 @@ function App() {
       setData(null);
       getData();
     }
-  }, [selectedSymbol]);
+  }, [selectedSymbol, range]);
 
   useEffect(() => {
     if (data !== null) {
@@ -87,7 +89,13 @@ function App() {
   return (
     <div data-bs-theme="dark" className="App">
       <div className="container">
-        <SymbolInfo symbol={selectedSymbol} data={data} loading={loading} />
+        <SymbolInfo
+          symbol={selectedSymbol}
+          data={data}
+          loading={loading}
+          range={range}
+          setRange={(val: string) => setRange(val)}
+        />
         <Shop
           setCurrentSymbol={(value: string) => setSelectedSymbol(value)}
           selectedSymbol={selectedSymbol}
