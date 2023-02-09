@@ -9,21 +9,27 @@ interface iNetworth {
 
 function Networth(props: iNetworth) {
   let [assetsValue, setAssetsValue] = useState(-1);
+  let [prevCloseAssetsValue, setPrevCloseAssetsValue] = useState(-1);
   let [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function getData() {
-      let total = 0;
+      let currTotal = 0;
+      let prevCloseTotal = 0;
       setLoading(true);
       for (let i in props.portfolio) {
         let symbolData = await getSymbolData(i);
         if (symbolData.chart.error === null) {
-          total +=
+          currTotal +=
             symbolData.chart.result[0].meta.regularMarketPrice *
+            props.portfolio[i];
+          prevCloseTotal +=
+            symbolData.chart.result[0].meta.chartPreviousClose *
             props.portfolio[i];
         }
       }
-      setAssetsValue(total);
+      setAssetsValue(currTotal);
+      setPrevCloseAssetsValue(prevCloseTotal);
     }
     getData();
   }, [props.portfolio]);
@@ -52,7 +58,14 @@ function Networth(props: iNetworth) {
             <div className="row">
               <div className="col"></div>
               <div className="col-5">
-                <span className="h2 text-secondary">
+                <span
+                  className={
+                    "h2 text-secondary " +
+                    (assetsValue > prevCloseAssetsValue
+                      ? "text-success-emphasis"
+                      : "text-danger-emphasis")
+                  }
+                >
                   {assetsValue.toFixed(2)}
                 </span>
               </div>

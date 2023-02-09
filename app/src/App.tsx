@@ -9,6 +9,7 @@ import iPortfolio from "./iPortfolio";
 import Table from "./table";
 import Networth from "./networth";
 import { loadData, saveData } from "./localstorage";
+import AssetsGraph from "./assestsGraph";
 
 interface iController {
   [0]: string;
@@ -114,6 +115,7 @@ function App() {
           setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
         />
         <Networth cash={cash} portfolio={portfolio} />
+        <AssetsGraph portfolio={portfolio} />
       </div>
     </div>
   );
