@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Graph from "./symbolGraph";
-import { getSymbolData, iSymbolData } from "./yfinance";
+import PriceChart from "./priceChart";
+import { iSymbolData } from "./yfinance";
 
 interface iProps {
   symbol: string;
@@ -59,10 +59,20 @@ function SymbolInfo(props: iProps) {
                               </tr>
                             </tbody>
                           </table>
-                          <Graph
-                            data={props.data}
+                          <PriceChart
+                            label={props.data.chart.result[0].meta.symbol}
+                            prices={
+                              props.data.chart.result[0].indicators.quote[0]
+                                .close
+                            }
+                            timestamps={props.data.chart.result[0].timestamp}
                             range={props.range}
                             setRange={(value: string) => props.setRange(value)}
+                            increasing={
+                              props.data.chart.result[0].meta
+                                .regularMarketPrice >
+                              props.data.chart.result[0].meta.chartPreviousClose
+                            }
                           />
                         </>
                       )}

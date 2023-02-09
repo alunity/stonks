@@ -9,7 +9,7 @@ import iPortfolio from "./iPortfolio";
 import Table from "./table";
 import Networth from "./networth";
 import { loadData, saveData } from "./localstorage";
-import AssetsGraph from "./assestsGraph";
+import AssetsGraph from "./assetsGraph";
 
 interface iController {
   [0]: string;

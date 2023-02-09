@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import dateFormat from "dateformat";
-import { iSymbolData } from "./yfinance";
 
 ChartJS.register(
   CategoryScale,
@@ -38,19 +37,21 @@ const options = {
 };
 
 interface iGraph {
-  data: iSymbolData;
+  label: string;
+  timestamps: Array<number>;
+  prices: Array<number>;
   range: string;
   setRange: Function;
+  increasing: boolean;
 }
 
-function Graph(props: iGraph) {
-  if (props.data.chart.result[0].timestamp === undefined) {
-    return null;
-  }
+function PriceChart(props: iGraph) {
+  let red = "255, 99, 132";
+  let green = "0,135,60";
 
   // Remove null values
-  let timestamps = props.data.chart.result[0].timestamp;
-  let prices = props.data.chart.result[0].indicators.quote[0].close;
+  let timestamps = props.timestamps;
+  let prices = props.prices;
 
   // @ts-ignore
   while (prices.indexOf(null) !== -1) {
@@ -60,10 +61,6 @@ function Graph(props: iGraph) {
     timestamps.splice(prices.indexOf(null), 1);
   }
 
-  let red = "255, 99, 132";
-  let green = "0,135,60";
-
-  // let [range, setRange] = useState("1d");
   const data = {
     labels: timestamps.map((x) => {
       let date = new Date(x * 1000);
@@ -85,28 +82,14 @@ function Graph(props: iGraph) {
     }),
     datasets: [
       {
-        label: props.data.chart.result[0].meta.symbol,
+        label: props.label,
         data: prices,
-        borderColor:
-          "rgb(" +
-          (props.data.chart.result[0].meta.regularMarketPrice >
-          props.data.chart.result[0].meta.chartPreviousClose
-            ? green
-            : red) +
-          ")",
-        backgroundColor:
-          "rgba(" +
-          (props.data.chart.result[0].meta.regularMarketPrice >
-          props.data.chart.result[0].meta.chartPreviousClose
-            ? green
-            : red) +
-          ", 0.5)",
+        borderColor: "rgb(" + (props.increasing ? green : red) + ")",
+        backgroundColor: "rgba(" + (props.increasing ? green : red) + ", 0.5)",
         fill: true,
       },
     ],
   };
-
-  // 1d, 5d, 1mo, 6mo, 1y, 5y, max
 
   return (
     <>
@@ -182,4 +165,4 @@ function Graph(props: iGraph) {
   );
 }
 
-export default Graph;
+export default PriceChart;
