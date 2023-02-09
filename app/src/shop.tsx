@@ -26,20 +26,18 @@ function Shop(props: iShop) {
 
   function canPerformTransaction(buying: boolean): boolean {
     if (+numberShares === 0) return false;
-    if (props.data !== null) {
-      if (props.data?.chart.result[0].meta.currency !== "USD") {
-        return false;
-      }
-      if (props.data.chart.error === null) {
-        if (buying) {
-          return (
-            props.cash >=
-            +numberShares * props.data?.chart.result[0].meta.regularMarketPrice
-          );
-        } else {
-          if (props.data.chart.result[0].meta.symbol in props.portfolio) {
-            return props.portfolio[props.selectedSymbol] >= +numberShares;
-          }
+    if (props.data === null) return false;
+
+    if (props.data.chart.error === null) {
+      if (props.data.chart.result[0].meta.currency !== "USD") return false;
+      if (buying) {
+        return (
+          props.cash >=
+          +numberShares * props.data?.chart.result[0].meta.regularMarketPrice
+        );
+      } else {
+        if (props.data.chart.result[0].meta.symbol in props.portfolio) {
+          return props.portfolio[props.selectedSymbol] >= +numberShares;
         }
       }
     }
@@ -53,7 +51,7 @@ function Shop(props: iShop) {
         <div className="card-body">
           <div className="container">
             <div className="row">
-              <div className="col-8">
+              <div className="col-6">
                 <div className="input-group mb-3">
                   <input
                     type="text"
@@ -65,7 +63,7 @@ function Shop(props: iShop) {
                   />
                 </div>
               </div>
-              <div className="col-2">
+              <div className="col-4">
                 <div className="input-group mb-3">
                   <input
                     type="number"

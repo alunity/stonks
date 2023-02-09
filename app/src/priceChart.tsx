@@ -95,7 +95,7 @@ function PriceChart(props: iGraph) {
     <>
       <Line options={options} data={data} />
       <div className="container grid">
-        <div className="row">
+        <div className="row position-relative">
           <div className="form-check col">
             <input
               className="form-check-input"
@@ -103,7 +103,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("1d")}
               type="radio"
             ></input>
-            <label className="form-check-label">1 day</label>
+            <label className="form-check-label">1D</label>
           </div>
           <div className="form-check col">
             <input
@@ -112,7 +112,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("5d")}
               type="radio"
             ></input>
-            <label className="form-check-label">5 days</label>
+            <label className="form-check-label">5D</label>
           </div>
           <div className="form-check col">
             <input
@@ -121,7 +121,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("1mo")}
               type="radio"
             ></input>
-            <label className="form-check-label">1 month</label>
+            <label className="form-check-label">1M</label>
           </div>
           <div className="form-check col">
             <input
@@ -130,7 +130,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("6mo")}
               type="radio"
             ></input>
-            <label className="form-check-label">6 months</label>
+            <label className="form-check-label">6M</label>
           </div>
           <div className="form-check col">
             <input
@@ -139,7 +139,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("1y")}
               type="radio"
             ></input>
-            <label className="form-check-label">1 year</label>
+            <label className="form-check-label">1Y</label>
           </div>
           <div className="form-check col">
             <input
@@ -148,7 +148,7 @@ function PriceChart(props: iGraph) {
               onChange={() => props.setRange("5y")}
               type="radio"
             ></input>
-            <label className="form-check-label">5 year</label>
+            <label className="form-check-label">5Y</label>
           </div>
           <div className="form-check col">
             <input

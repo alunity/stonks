@@ -63,6 +63,8 @@ function Networth(props: iNetworth) {
                     "h2 text-secondary " +
                     (assetsValue > prevCloseAssetsValue
                       ? "text-success-emphasis"
+                      : assetsValue == prevCloseAssetsValue
+                      ? ""
                       : "text-danger-emphasis")
                   }
                 >

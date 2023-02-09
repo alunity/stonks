@@ -24,14 +24,16 @@ function SymbolInfo(props: iProps) {
           <>
             {!props.loading && (
               <div className="card-body">
-                {props.data.chart.error === null &&
-                  props.data.chart.result[0].meta.regularMarketPrice !==
-                    undefined && (
-                    <>
-                      <h5 className="card-title">
-                        {props.data.chart.result[0].meta.symbol}
-                      </h5>
-                      {props.data.chart.result[0].meta.currency === "USD" && (
+                {props.data.chart.error === null && (
+                  <>
+                    <h5 className="card-title">
+                      {props.data.chart.result[0].meta.symbol}
+                    </h5>
+                    {props.data.chart.result[0].meta.currency === "USD" &&
+                      props.data.chart.result[0].meta.regularMarketPrice !==
+                        undefined &&
+                      props.data.chart.result[0].meta.instrumentType !==
+                        "MUTUALFUND" && (
                         <>
                           <table className="table">
                             <tbody>
@@ -69,20 +71,33 @@ function SymbolInfo(props: iProps) {
                             range={props.range}
                             setRange={(value: string) => props.setRange(value)}
                             increasing={
-                              props.data.chart.result[0].meta
-                                .regularMarketPrice >
-                              props.data.chart.result[0].meta.chartPreviousClose
+                              props.data.chart.result[0].indicators.quote[0]
+                                .close[
+                                props.data.chart.result[0].indicators.quote[0]
+                                  .close.length - 1
+                              ] >
+                              props.data.chart.result[0].indicators.quote[0]
+                                .close[0]
                             }
                           />
                         </>
                       )}
-                      {props.data.chart.result[0].meta.currency !== "USD" && (
+                    {props.data.chart.result[0].meta.currency !== "USD" &&
+                      props.data.chart.result[0].meta.instrumentType !==
+                        "MUTUALFUND" && (
                         <h5 className="card-title">
                           Only symbols valued in USD are available
                         </h5>
                       )}
-                    </>
-                  )}
+
+                    {props.data.chart.result[0].meta.instrumentType ===
+                      "MUTUALFUND" && (
+                      <h5 className="card-title">
+                        Mutual funds cannot be bought
+                      </h5>
+                    )}
+                  </>
+                )}
                 {props.symbol !== "" && (
                   <>
                     {props.data.chart.error?.code === "Not Found" && (

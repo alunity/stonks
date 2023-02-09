@@ -90,32 +90,47 @@ function App() {
   return (
     <div data-bs-theme="dark" className="App">
       <div className="container">
-        <SymbolInfo
-          symbol={selectedSymbol}
-          data={data}
-          loading={loading}
-          range={range}
-          setRange={(val: string) => setRange(val)}
-        />
-        <Shop
-          setCurrentSymbol={(value: string) => setSelectedSymbol(value)}
-          selectedSymbol={selectedSymbol}
-          data={data}
-          loading={loading}
-          portfolio={portfolio}
-          cash={cash}
-          performTransaction={(
-            symbol: string,
-            amount: number,
-            buying: boolean
-          ) => performTransaction(symbol, amount, buying)}
-        />
-        <Table
-          portfolio={portfolio}
-          setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
-        />
-        <Networth cash={cash} portfolio={portfolio} />
-        <AssetsGraph portfolio={portfolio} />
+        <div className="grid">
+          <div className="row">
+            <div className="col-md-7">
+              <Networth cash={cash} portfolio={portfolio} />
+              <br></br>
+              <Table
+                portfolio={portfolio}
+                setSymbol={(symbol: string) => setSelectedSymbol(symbol)}
+              />
+
+              <br></br>
+
+              <AssetsGraph portfolio={portfolio} />
+            </div>
+            <div className="col-md-5">
+              <Shop
+                setCurrentSymbol={(value: string) => setSelectedSymbol(value)}
+                selectedSymbol={selectedSymbol}
+                data={data}
+                loading={loading}
+                portfolio={portfolio}
+                cash={cash}
+                performTransaction={(
+                  symbol: string,
+                  amount: number,
+                  buying: boolean
+                ) => performTransaction(symbol, amount, buying)}
+              />
+
+              <br></br>
+
+              <SymbolInfo
+                symbol={selectedSymbol}
+                data={data}
+                loading={loading}
+                range={range}
+                setRange={(val: string) => setRange(val)}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
