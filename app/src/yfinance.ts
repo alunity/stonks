@@ -113,7 +113,15 @@ async function getSymbolData(
   } catch (e: any) {
     let message = "";
     if (e.message === "Failed to fetch") {
-      await timeout(10000);
+      let BASE_OFFSET = 7500;
+      let MIN_OFFSET = 0;
+      let MAX_OFFSET = 2500;
+
+      await timeout(
+        BASE_OFFSET +
+          Math.floor(Math.random() * (MAX_OFFSET - MIN_OFFSET + 1)) +
+          MIN_OFFSET
+      );
       return getSymbolData(symbol, signal);
       // message = "Failed";
     } else {
