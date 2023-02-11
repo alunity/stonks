@@ -11,6 +11,7 @@ import Networth from "./networth";
 import { loadData, saveData } from "./localstorage";
 import AssetsGraph from "./assetsGraph";
 import Startup from "./startup";
+import Settings from "./settings";
 
 interface iController {
   [0]: string;
@@ -28,6 +29,8 @@ function App() {
   let abortController = useRef<iController>();
 
   let [range, setRange] = useState("1d");
+
+  let [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     saveData(cash, portfolio);
@@ -93,6 +96,10 @@ function App() {
       <div className="row fixedPosition nav pt-3 mb-3">
         <h1 className="text-center">Stonks</h1>
       </div>
+      <a
+        className="gg-menu-round top-left glow"
+        onClick={() => setSettingsOpen(true)}
+      ></a>
       <div className="container offset">
         <div className="grid">
           <div className="row">
@@ -137,6 +144,10 @@ function App() {
         </div>
       </div>
       <Startup portfolio={portfolio} />
+      <Settings
+        open={settingsOpen}
+        setOpen={(value: boolean) => setSettingsOpen(value)}
+      />
     </div>
   );
 }
