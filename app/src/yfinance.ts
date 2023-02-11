@@ -113,7 +113,7 @@ async function getSymbolData(
   } catch (e: any) {
     let message = "";
     if (e.message === "Failed to fetch") {
-      let BASE_OFFSET = 7500;
+      let BASE_OFFSET = 10000;
       let MIN_OFFSET = 0;
       let MAX_OFFSET = 2500;
 
@@ -123,7 +123,6 @@ async function getSymbolData(
           MIN_OFFSET
       );
       return getSymbolData(symbol, signal);
-      // message = "Failed";
     } else {
       if (e.message === "The user aborted a request.") {
         message = "Abort";

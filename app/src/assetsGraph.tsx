@@ -81,7 +81,7 @@ function AssetsGraph(props: iAssetsGraph) {
             ) {
               if (
                 time[j] <= symbolData.chart.result[0].timestamp[k] &&
-                symbolData.chart.result[0].timestamp[k] !== null
+                symbolData.chart.result[0].indicators.quote[0].close[k] !== null
               ) {
                 if (av[j] === undefined) {
                   av[j] =
@@ -114,7 +114,10 @@ function AssetsGraph(props: iAssetsGraph) {
   }, [props.portfolio, range]);
 
   useEffect(() => {
-    if (assetsValue !== undefined) {
+    if (
+      (assetsValue !== undefined && assetsValue.length !== 0) ||
+      Object.keys(props.portfolio).length === 0
+    ) {
       setLoading(false);
     }
   }, [assetsValue]);
@@ -123,7 +126,7 @@ function AssetsGraph(props: iAssetsGraph) {
     <div className="card text-light">
       <div className="card-header">Assets Graph</div>
       <div className="card-body">
-        {!loading && (
+        {!loading && Object.keys(props.portfolio).length !== 0 && (
           <>
             <PriceChart
               prices={assetsValue}
