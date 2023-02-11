@@ -1,3 +1,23 @@
 body {
   background-color: #222222 !important;
 }
+
+.nav {
+  background-color: rgba(33, 37, 41, 1);
+}
+
+.scroll {
+  height: 100%;
+}
+
+.fixedPosition {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 4;
+}
+
+.offset {
+  padding-top: 6rem !important;
+}

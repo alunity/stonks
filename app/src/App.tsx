@@ -10,6 +10,7 @@ import Table from "./table";
 import Networth from "./networth";
 import { loadData, saveData } from "./localstorage";
 import AssetsGraph from "./assetsGraph";
+import Startup from "./startup";
 
 interface iController {
   [0]: string;
@@ -89,7 +90,10 @@ function App() {
 
   return (
     <div data-bs-theme="dark" className="App">
-      <div className="container">
+      <div className="row fixedPosition nav pt-3 mb-3">
+        <h1 className="text-center">Stonks</h1>
+      </div>
+      <div className="container offset">
         <div className="grid">
           <div className="row">
             <div className="col-md-7">
@@ -132,6 +136,7 @@ function App() {
           </div>
         </div>
       </div>
+      <Startup portfolio={portfolio} />
     </div>
   );
 }
