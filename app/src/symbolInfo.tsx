@@ -61,25 +61,30 @@ function SymbolInfo(props: iProps) {
                               </tr>
                             </tbody>
                           </table>
-                          <PriceChart
-                            label={props.data.chart.result[0].meta.symbol}
-                            prices={
-                              props.data.chart.result[0].indicators.quote[0]
-                                .close
-                            }
-                            timestamps={props.data.chart.result[0].timestamp}
-                            range={props.range}
-                            setRange={(value: string) => props.setRange(value)}
-                            increasing={
-                              props.data.chart.result[0].indicators.quote[0]
-                                .close[
+                          {props.data.chart.result[0].indicators.quote[0]
+                            .close !== undefined && (
+                            <PriceChart
+                              label={props.data.chart.result[0].meta.symbol}
+                              prices={
                                 props.data.chart.result[0].indicators.quote[0]
-                                  .close.length - 1
-                              ] >
-                              props.data.chart.result[0].indicators.quote[0]
-                                .close[0]
-                            }
-                          />
+                                  .close
+                              }
+                              timestamps={props.data.chart.result[0].timestamp}
+                              range={props.range}
+                              setRange={(value: string) =>
+                                props.setRange(value)
+                              }
+                              increasing={
+                                props.data.chart.result[0].indicators.quote[0]
+                                  .close[
+                                  props.data.chart.result[0].indicators.quote[0]
+                                    .close.length - 1
+                                ] >
+                                props.data.chart.result[0].indicators.quote[0]
+                                  .close[0]
+                              }
+                            />
+                          )}
                         </>
                       )}
                     {props.data.chart.result[0].meta.currency !== "USD" &&
