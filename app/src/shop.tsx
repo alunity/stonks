@@ -37,7 +37,10 @@ function Shop(props: iShop) {
         );
       } else {
         if (props.data.chart.result[0].meta.symbol in props.portfolio) {
-          return props.portfolio[props.selectedSymbol] >= +numberShares;
+          return (
+            props.portfolio[props.data.chart.result[0].meta.symbol] >=
+            +numberShares
+          );
         }
       }
     }
