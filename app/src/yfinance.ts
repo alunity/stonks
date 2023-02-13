@@ -102,7 +102,7 @@ async function getSymbolData(
           "&useYfid=true&range=" +
           range +
           "&corsDomain=finance.yahoo.com&.tsrc=finance?nocache=" +
-          Math.floor(Date.now() / 1000 / 86400)
+          Math.floor(Date.now() / 1000 / 1440)
       )}`,
       { signal: signal }
     );
