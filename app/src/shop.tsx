@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import iPortfolio from "./iPortfolio";
-import { iSymbolData } from "./yfinance";
+import { iSymbolData, iSymbolSearch, symbolSearch } from "./yfinance";
 
 interface iShop {
   selectedSymbol: string;
@@ -12,9 +12,41 @@ interface iShop {
   performTransaction: Function;
 }
 
+interface iController {
+  [0]: string;
+  [1]: AbortController;
+}
+
 function Shop(props: iShop) {
   let [buying, setBuying] = useState(true);
   let [numberShares, setNumberShares] = useState("");
+  let [suggestions, setSuggestions] = useState<Array<iSymbolSearch>>();
+
+  let abortController = useRef<iController>();
+
+  useEffect(() => {
+    async function search() {
+      if (props.selectedSymbol !== "") {
+        let abort = new AbortController();
+        abortController.current = [props.selectedSymbol, abort];
+        let data: Array<iSymbolSearch> = await symbolSearch(
+          props.selectedSymbol,
+          abort.signal
+        );
+        setSuggestions(data);
+      }
+    }
+
+    if (props.selectedSymbol !== "") {
+      if (abortController.current !== undefined) {
+        if (abortController.current[0] !== props.selectedSymbol) {
+          abortController.current[1].abort();
+        }
+      }
+
+      search();
+    }
+  }, [props.selectedSymbol]);
 
   // Check and remove negative
   if (+numberShares < 0) {
@@ -47,6 +79,13 @@ function Shop(props: iShop) {
     return false;
   }
 
+  let options = suggestions
+    ?.filter((x) => x.isYahooFinance && x.quoteType === "EQUITY")
+    ?.map((x) => (
+      <option key={x.symbol} value={x.symbol}>
+        {x.shortname}
+      </option>
+    ));
   return (
     <>
       <div className="card text-light">
@@ -63,7 +102,9 @@ function Shop(props: iShop) {
                     aria-describedby="basic-addon1"
                     value={props.selectedSymbol}
                     onChange={(e) => props.setCurrentSymbol(e.target.value)}
+                    list="x"
                   />
+                  <datalist id="x">{options}</datalist>
                 </div>
               </div>
               <div className="col-4">

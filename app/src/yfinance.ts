@@ -73,6 +73,22 @@ interface iSymbolData {
   };
 }
 
+interface iSymbolSearch {
+  exchDisp: string;
+  exchange: string;
+  index: string;
+  industry: string;
+  isYahooFinance: boolean;
+  logoUrl: string;
+  longname: string;
+  quoteType: string;
+  score: number;
+  sector: string;
+  shortname: string;
+  symbol: string;
+  typeDisp: string;
+}
+
 const intervals: { [property: string]: string } = {
   "1d": "2m",
   "5d": "15m",
@@ -205,4 +221,35 @@ async function getSymbolData(
   }
 }
 
-export { getSymbolData, type iSymbolData };
+async function symbolSearch(
+  searchTerm: string,
+  signal: AbortSignal | undefined = undefined
+): Promise<Array<iSymbolSearch>> {
+  try {
+    let response = fetch(
+      `https://api.allorigins.win/get?url=${encodeURIComponent(
+        `https://query2.finance.yahoo.com/v1/finance/search?q=${searchTerm}&lang=en-GB&region=GB&quotesCount=6&newsCount=4&enableFuzzyQuery=false&quotesQueryId=tss_match_phrase_query&multiQuoteQueryId=multi_quote_single_token_query&newsQueryId=news_cie_vespa&enableCb=true&enableNavLinks=true&enableEnhancedTrivialQuery=true&enableCulturalAssets=true&enableLogoUrl=true`
+      )}`,
+      { signal: signal }
+    );
+    return JSON.parse((await (await response).json()).contents).quotes;
+  } catch (e: any) {
+    let message = "";
+    if (e.message === "Failed to fetch") {
+      let BASE_OFFSET = 10000;
+      let MIN_OFFSET = 0;
+      let MAX_OFFSET = 2500;
+
+      await timeout(
+        BASE_OFFSET +
+          Math.floor(Math.random() * (MAX_OFFSET - MIN_OFFSET + 1)) +
+          MIN_OFFSET
+      );
+      return symbolSearch(searchTerm);
+    } else {
+      return [];
+    }
+  }
+}
+
+export { getSymbolData, type iSymbolData, symbolSearch, type iSymbolSearch };
