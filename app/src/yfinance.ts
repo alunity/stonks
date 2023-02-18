@@ -245,7 +245,7 @@ async function symbolSearch(
           Math.floor(Math.random() * (MAX_OFFSET - MIN_OFFSET + 1)) +
           MIN_OFFSET
       );
-      return symbolSearch(searchTerm);
+      return symbolSearch(searchTerm, signal);
     } else {
       return [];
     }
