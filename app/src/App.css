@@ -70,3 +70,7 @@ body {
 .float-left {
   float: left;
 }
+
+.center {
+  text-align: center;
+}

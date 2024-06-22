@@ -37,21 +37,45 @@ function Settings(props: iProps) {
             <h5 className="modal-title">Settings</h5>
           </div>
           <div className="modal-body">
-            <h5>Reset</h5>
-            <p className="float-left text-danger">
-              Warning: This clears your portfolio and restores your cash to
-              $1000.
-            </p>
-
-            <button
-              onClick={() => {
-                localStorage.clear();
-                location.reload();
-              }}
-              className="btn btn-danger position-relative"
-            >
-              Reset
-            </button>
+            <div>
+              <h5>Reset</h5>
+              <p className="float-left text-danger">
+                Warning: This clears your portfolio and restores your cash to
+                $1000.
+              </p>
+              <button
+                onClick={() => {
+                  localStorage.clear();
+                  location.reload();
+                }}
+                className="btn btn-danger"
+              >
+                Reset
+              </button>
+            </div>
+            <br></br>
+            <div>
+              <h5>Import and Export data</h5>
+              <button
+                className="btn btn-warning"
+                onClick={() => {
+                  const data = prompt("Enter your save data:");
+                  localStorage.data = data;
+                  location.reload();
+                }}
+              >
+                Import
+              </button>
+              <button
+                className="btn btn-success"
+                onClick={() => {
+                  navigator.clipboard.writeText(localStorage.data);
+                  alert("Data has been copied to clipboard");
+                }}
+              >
+                Export
+              </button>
+            </div>
           </div>
           <div className="modal-footer">
             <button

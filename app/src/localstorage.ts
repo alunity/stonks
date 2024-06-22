@@ -9,7 +9,13 @@ function loadData() {
   if (localStorage.data === undefined) {
     return { cash: 1000, portfolio: {} };
   } else {
-    return JSON.parse(localStorage.data);
+    try {
+      return JSON.parse(localStorage.data);
+    } catch (error) {
+      alert("Invalid data");
+      localStorage.clear();
+      location.reload();
+    }
   }
 }
 

@@ -97,7 +97,7 @@ function Shop(props: iShop) {
                 <div className="input-group mb-3">
                   <input
                     type="text"
-                    className="form-control text-black"
+                    className="form-control"
                     placeholder="Stock Symbol"
                     aria-describedby="basic-addon1"
                     value={props.selectedSymbol}
@@ -111,7 +111,7 @@ function Shop(props: iShop) {
                 <div className="input-group mb-3">
                   <input
                     type="number"
-                    className="form-control text-black"
+                    className="form-control"
                     placeholder="no shares"
                     value={numberShares}
                     onChange={(e) => setNumberShares(e.target.value)}
